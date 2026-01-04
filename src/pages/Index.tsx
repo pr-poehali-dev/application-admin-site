@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +12,22 @@ export default function Index() {
     email: '',
     message: ''
   });
+
+  const [content, setContent] = useState<Record<string, any>>({
+    hero_title: { value: 'Яворский Дворъ Масел' },
+    hero_description: { value: 'Сыродавленное масло ручной работы...' },
+    history_title: { value: 'История нашего бренда' },
+    history_subtitle: { value: 'Яворский Дворъ Масел — дань Роду' },
+    features_title: { value: 'В чём наша особенность?' },
+    features_subtitle: { value: 'Когда вы приходитесь к продуктам...' }
+  });
+
+  useEffect(() => {
+    fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
+      .then(res => res.json())
+      .then(data => setContent(data))
+      .catch(err => console.error('Ошибка загрузки контента:', err));
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +57,10 @@ export default function Index() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  Яворский Дворъ Масел
+                  {content.hero_title?.value}
                 </h1>
                 <p className="text-base text-foreground/80 leading-relaxed">
-                  Сыродавленное масло ручной работы. Без лишних примесей, только целебные орехи и семена, 
-                  отжатые вручную с заботой и вкусе и пользе.
+                  {content.hero_description?.value}
                 </p>
                 <div className="flex gap-4">
                   <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full">
@@ -70,10 +85,10 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              История нашего бренда
+              {content.history_title?.value}
             </h2>
             <p className="text-sm text-foreground/70 mb-8">
-              Яворский Дворъ Масел — дань Роду. Память, которая оживает в каждом продукте
+              {content.history_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="sticker-pin bg-white/95 p-6 rounded-xl">
@@ -97,11 +112,10 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              В чём наша особенность?
+              {content.features_title?.value}
             </h2>
             <p className="text-sm text-foreground/70 mb-8">
-              Когда вы приходитесь к продуктам Яворского Двора Масел, вы прикасаетесь к истории рода, 
-              восстановленной с честью
+              {content.features_subtitle?.value}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[

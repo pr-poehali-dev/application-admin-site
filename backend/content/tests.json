@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "name": "Test get all content",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "hero_title": {
+          "value": "string",
+          "section": "string"
+        }
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
