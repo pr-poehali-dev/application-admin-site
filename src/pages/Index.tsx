@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import VideoPlayer from '@/components/VideoPlayer';
 
 export default function Index() {
   const [formData, setFormData] = useState({
@@ -144,12 +145,22 @@ export default function Index() {
               сыродавленного о масла в вашей тарелке.
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="sticker-pin aspect-video bg-gray-300 rounded-xl flex items-center justify-center">
-                <Icon name="PlayCircle" size={64} className="text-gray-600" />
-              </div>
+              <VideoPlayer 
+                url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                className="sticker-pin aspect-video rounded-xl"
+              />
               <div className="grid grid-cols-2 gap-3">
-                {[1, 2, 3, 4].map((num) => (
-                  <div key={num} className="sticker-pin aspect-video bg-gray-300 rounded-lg"></div>
+                {[
+                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                ].map((url, idx) => (
+                  <VideoPlayer 
+                    key={idx}
+                    url={url}
+                    className="sticker-pin aspect-video rounded-lg"
+                  />
                 ))}
               </div>
             </div>
