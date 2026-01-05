@@ -79,13 +79,13 @@
 @layer utilities {
   .sticker-pin {
     position: relative;
-    padding-top: calc(var(--pin-size, 128px) + 5px);
+    padding-top: calc(var(--pin-size, 128px) + 20px);
   }
 
   .sticker-pin::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: 15px;
     left: calc(50% + var(--pin-offset-x, -30px));
     width: var(--pin-size, 128px);
     height: var(--pin-size, 128px);
