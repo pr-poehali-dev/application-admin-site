@@ -176,12 +176,16 @@ export default function Index() {
               </div>
             </div>
             <div className="flex flex-wrap gap-4 mt-6">
-              <Button variant="ghost" className="border border-white/20 text-foreground hover:bg-white/5 rounded-full">
+              <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
+                <Icon name="Play" size={18} className="mr-2" />
+                {content.btn_video?.value || 'Смотреть видео'}
+              </Button>
+              <Button variant="ghost" className="border border-white/20 text-foreground hover:bg-white/5 rounded-full px-6">
                 {content.btn_catalog?.value || 'Скачать каталог (PDF)'}
               </Button>
               <Link to="/videos">
-                <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
-                  <Icon name="PlayCircle" size={20} className="mr-2" />
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 rounded-full px-6">
+                  <Icon name="PlayCircle" size={18} className="mr-2" />
                   Смотреть все видео
                 </Button>
               </Link>
