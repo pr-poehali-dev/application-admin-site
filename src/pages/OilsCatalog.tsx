@@ -130,9 +130,9 @@ export default function OilsCatalog() {
               <div className="flex-1">
                 <div className="grid md:grid-cols-2 gap-8">
                   {filteredOils.map((oil) => (
-                    <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
+                    <div key={oil.id} className="sticker-pin bg-white/95 p-8 rounded-2xl space-y-6 min-h-[380px] flex flex-col justify-between">
                       <div className="flex items-center gap-4">
-                        <span className="text-5xl">{oil.emoji}</span>
+                        <span className="text-6xl">{oil.emoji}</span>
                         <div className="flex-1">
                           <h3 className="text-xl font-bold text-black">{oil.name}</h3>
                           <p className="text-sm text-black/70">{oil.description}</p>
