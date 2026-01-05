@@ -66,6 +66,30 @@ export default function Index() {
   const pinMarginLeft = designSettings['pin_icon_size']?.margin_left || 0;
   const pinMarginRight = designSettings['pin_icon_size']?.margin_right || 0;
 
+  const getStyleForElement = (key: string) => {
+    const settings = designSettings[key];
+    if (!settings) return {};
+    
+    const style: React.CSSProperties = {};
+    if (settings.font_size) style.fontSize = `${settings.font_size}px`;
+    if (settings.margin_left) style.marginLeft = `${settings.margin_left}px`;
+    if (settings.margin_right) style.marginRight = `${settings.margin_right}px`;
+    if (settings.margin_top) style.marginTop = `${settings.margin_top}px`;
+    if (settings.margin_bottom) style.marginBottom = `${settings.margin_bottom}px`;
+    if (settings.padding_left) style.paddingLeft = `${settings.padding_left}px`;
+    if (settings.padding_right) style.paddingRight = `${settings.padding_right}px`;
+    if (settings.padding_top) style.paddingTop = `${settings.padding_top}px`;
+    if (settings.padding_bottom) style.paddingBottom = `${settings.padding_bottom}px`;
+    if (settings.width) style.width = `${settings.width}px`;
+    if (settings.line_height) style.lineHeight = settings.line_height;
+    
+    return style;
+  };
+
+  const isSectionVisible = (key: string) => {
+    return designSettings[key]?.is_visible !== false;
+  };
+
   return (
     <div className="min-h-screen" style={{
       '--pin-size': `${pinSize}px`,
@@ -86,15 +110,15 @@ export default function Index() {
         </div>
       </nav>
 
-      <section className="pt-24 pb-16 px-6">
+      {isSectionVisible('hero_section') && <section className="pt-24 pb-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem] relative overflow-hidden">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                <h1 className="text-4xl md:text-5xl font-bold leading-tight" style={getStyleForElement('hero_title')}>
                   {content.hero_title?.value}
                 </h1>
-                <p className="text-base text-foreground/80 leading-relaxed">
+                <p className="text-base text-foreground/80 leading-relaxed" style={getStyleForElement('hero_description')}>
                   {content.hero_description?.value}
                 </p>
                 <div className="flex gap-4">
@@ -119,20 +143,20 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
               {content.history_title?.value}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-sm text-foreground/70 mb-8" style={getStyleForElement('section_text')}>
               {content.history_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="sticker-pin bg-white/95 p-6 rounded-xl">
-                <p className="text-sm text-black leading-relaxed">
+              <div className="sticker-pin bg-white/95 p-6 rounded-xl" style={getStyleForElement('white_cards')}>
+                <p className="text-sm text-black leading-relaxed" style={getStyleForElement('section_text')}>
                   {content.history_text_1?.value}
                 </p>
               </div>
-              <div className="sticker-pin bg-white/95 p-6 rounded-xl">
-                <p className="text-sm text-black leading-relaxed">
+              <div className="sticker-pin bg-white/95 p-6 rounded-xl" style={getStyleForElement('white_cards')}>
+                <p className="text-sm text-black leading-relaxed" style={getStyleForElement('section_text')}>
                   {content.history_text_2?.value}
                 </p>
               </div>
@@ -144,10 +168,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
               {content.features_title?.value}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-sm text-foreground/70 mb-8" style={getStyleForElement('section_text')}>
               {content.features_subtitle?.value}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -157,8 +181,8 @@ export default function Index() {
                 { key: 'feature_3', fallback: 'Семейные традиции' },
                 { key: 'feature_4', fallback: 'Без примесей' }
               ].map((item, idx) => (
-                <div key={idx} className="sticker-pin bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square">
-                  <span className="text-lg font-bold text-black text-center leading-tight">
+                <div key={idx} className="sticker-pin bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square" style={getStyleForElement('feature_cards')}>
+                  <span className="text-lg font-bold text-black text-center leading-tight" style={getStyleForElement('section_text')}>
                     {content[item.key]?.value || item.fallback}
                   </span>
                 </div>
@@ -171,10 +195,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
               {content.video_section_title?.value || 'Как мы создаем наше масло?'}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-sm text-foreground/70 mb-8" style={getStyleForElement('section_text')}>
               {content.video_section_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
@@ -212,15 +236,15 @@ export default function Index() {
             </div>
           </Card>
         </div>
-      </section>
+      </section>}
 
-      <section className="py-16 px-6">
+      {isSectionVisible('order_section') && <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
               {content.order_title?.value || 'Как заказать?'}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-sm text-foreground/70 mb-8" style={getStyleForElement('section_text')}>
               {content.order_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-3 gap-6">
@@ -230,9 +254,9 @@ export default function Index() {
                 { step: 3, key: 'order_step_3' }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
-                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
+                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3" style={getStyleForElement('order_cards')}>
                     <span className="text-4xl font-bold text-black">{item.step}</span>
-                    <p className="text-sm text-black text-center font-medium">
+                    <p className="text-sm text-black text-center font-medium" style={getStyleForElement('section_text')}>
                       {content[item.key]?.value || 'Шаг ' + item.step}
                     </p>
                   </div>
@@ -244,16 +268,16 @@ export default function Index() {
             </div>
           </Card>
         </div>
-      </section>
+      </section>}
 
-      <section className="py-16 px-6 pb-24">
+      {isSectionVisible('contact_section') && <section className="py-16 px-6 pb-24">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-[2rem]">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
                 {content.contact_title?.value || 'Оставить заявку'}
               </h2>
-              <p className="text-sm text-foreground/70 mb-6">
+              <p className="text-sm text-foreground/70 mb-6" style={getStyleForElement('section_text')}>
                 {content.contact_subtitle?.value}
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -290,7 +314,7 @@ export default function Index() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
     </div>
   );
 }
