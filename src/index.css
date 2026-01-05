@@ -85,7 +85,7 @@
     content: "";
     position: absolute;
     top: var(--pin-top, 12px);
-    left: calc(50% + 10px);
+    left: calc(50% - 30px);
     width: var(--pin-size, 128px);
     height: var(--pin-size, 128px);
     margin-left: var(--pin-margin-left, 0px);
