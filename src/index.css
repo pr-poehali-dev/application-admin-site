@@ -79,6 +79,7 @@
 @layer utilities {
   .sticker-pin {
     position: relative;
+    padding-top: 5px;
   }
 
   .sticker-pin::before {
