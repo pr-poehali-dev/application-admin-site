@@ -4,7 +4,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 def handler(event: dict, context):
-    '''API для работы с контентом сайта'''
+    '''API для работы с контентом сайта и каталогом масел'''
     method = event.get('httpMethod', 'GET')
     
     if method == 'OPTIONS':
@@ -23,7 +23,27 @@ def handler(event: dict, context):
     schema = os.environ['MAIN_DB_SCHEMA']
     
     try:
-        if method == 'GET':
+        path_type = event.get('queryStringParameters', {}).get('type', 'content')
+        
+        if method == 'GET' and path_type == 'oils':
+            cur.execute(f"SELECT * FROM {schema}.oils ORDER BY category_slug, name")
+            oils = cur.fetchall()
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                'body': json.dumps([dict(oil) for oil in oils], default=str)
+            }
+        
+        elif method == 'GET' and path_type == 'categories':
+            cur.execute(f"SELECT * FROM {schema}.oil_categories ORDER BY name")
+            categories = cur.fetchall()
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                'body': json.dumps([dict(cat) for cat in categories], default=str)
+            }
+        
+        elif method == 'GET':
             cur.execute(f"SELECT * FROM {schema}.site_content ORDER BY section, key")
             content = cur.fetchall()
             
@@ -92,6 +112,41 @@ def handler(event: dict, context):
                     'content': dict(updated)
                 })
             }
+        
+        elif method == 'POST':
+            body = json.loads(event.get('body', '{}'))
+            
+            if path_type == 'categories':
+                name = body.get('name')
+                slug = body.get('slug')
+                cur.execute(f"INSERT INTO {schema}.oil_categories (name, slug) VALUES (%s, %s) RETURNING *", (name, slug))
+                category = cur.fetchone()
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps(dict(category), default=str)
+                }
+            
+            elif path_type == 'oils':
+                name = body.get('name')
+                emoji = body.get('emoji', '🌾')
+                category = body.get('category')
+                description = body.get('description', '')
+                audio_url = body.get('audioUrl', '')
+                
+                cur.execute(
+                    f"""INSERT INTO {schema}.oils (name, emoji, category_slug, description, audio_url) 
+                    VALUES (%s, %s, %s, %s, %s) RETURNING *""",
+                    (name, emoji, category, description, audio_url)
+                )
+                oil = cur.fetchone()
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps(dict(oil), default=str)
+                }
         
         return {
             'statusCode': 405,

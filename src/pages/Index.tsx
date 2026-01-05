@@ -26,68 +26,20 @@ export default function Index() {
 
   const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Array<{id: number; name: string; slug: string}>>([]);
+  const [oils, setOils] = useState<Array<{id: number; name: string; emoji: string; category_slug: string; description: string; audio_url: string}>>([]);
 
-  const oilCatalog = [
-    { 
-      name: content.oil_1_name?.value || 'Масло кедрового ореха',
-      emoji: '🌰',
-      category: 'ореховые',
-      description: content.oil_1_desc?.value || 'Насыщенный аромат с ореховыми нотами',
-      audioUrl: content.oil_1_audio?.value || ''
-    },
-    { 
-      name: content.oil_2_name?.value || 'Масло грецкого ореха',
-      emoji: '🥜',
-      category: 'ореховые',
-      description: content.oil_2_desc?.value || 'Мягкий вкус с легкой горчинкой',
-      audioUrl: content.oil_2_audio?.value || ''
-    },
-    { 
-      name: content.oil_3_name?.value || 'Льняное масло',
-      emoji: '🌾',
-      category: 'семенные',
-      description: content.oil_3_desc?.value || 'Богатое омега-3 кислотами',
-      audioUrl: content.oil_3_audio?.value || ''
-    },
-    { 
-      name: content.oil_4_name?.value || 'Тыквенное масло',
-      emoji: '🎃',
-      category: 'семенные',
-      description: content.oil_4_desc?.value || 'Глубокий вкус с пикантными нотами',
-      audioUrl: content.oil_4_audio?.value || ''
-    },
-    { 
-      name: content.oil_5_name?.value || 'Подсолнечное масло',
-      emoji: '🌻',
-      category: 'семенные',
-      description: content.oil_5_desc?.value || 'Классический вкус для любых блюд',
-      audioUrl: content.oil_5_audio?.value || ''
-    },
-    { 
-      name: content.oil_6_name?.value || 'Масло фундука',
-      emoji: '🥥',
-      category: 'ореховые',
-      description: content.oil_6_desc?.value || 'Нежный ореховый вкус',
-      audioUrl: content.oil_6_audio?.value || ''
-    }
-  ];
-
-  const categories = [
-    { id: 'ореховые', label: 'Ореховые масла' },
-    { id: 'семенные', label: 'Семенные масла' }
-  ];
-
-  const toggleCategory = (categoryId: string) => {
+  const toggleCategory = (categorySlug: string) => {
     setSelectedCategories(prev => 
-      prev.includes(categoryId) 
-        ? prev.filter(c => c !== categoryId)
-        : [...prev, categoryId]
+      prev.includes(categorySlug) 
+        ? prev.filter(c => c !== categorySlug)
+        : [...prev, categorySlug]
     );
   };
 
   const filteredOils = selectedCategories.length === 0 
-    ? oilCatalog 
-    : oilCatalog.filter(oil => selectedCategories.includes(oil.category));
+    ? oils 
+    : oils.filter(oil => selectedCategories.includes(oil.category_slug));
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
@@ -99,6 +51,16 @@ export default function Index() {
       .then(res => res.json())
       .then(data => setDesignSettings(data))
       .catch(err => console.error('Ошибка загрузки настроек дизайна:', err));
+
+    fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(err => console.error('Ошибка загрузки категорий:', err));
+
+    fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=oils')
+      .then(res => res.json())
+      .then(data => setOils(data))
+      .catch(err => console.error('Ошибка загрузки масел:', err));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -299,12 +261,12 @@ export default function Index() {
                       <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
                         <input
                           type="checkbox"
-                          checked={selectedCategories.includes(category.id)}
-                          onChange={() => toggleCategory(category.id)}
+                          checked={selectedCategories.includes(category.slug)}
+                          onChange={() => toggleCategory(category.slug)}
                           className="w-5 h-5 rounded border-2 border-foreground/30 bg-transparent checked:bg-primary checked:border-primary cursor-pointer"
                         />
                         <span className="text-sm text-foreground group-hover:text-primary transition-colors">
-                          {category.label}
+                          {category.name}
                         </span>
                       </label>
                     ))}
@@ -341,7 +303,7 @@ export default function Index() {
                           className="w-full"
                           style={{ filter: 'invert(0.2) sepia(0.1)' }}
                         >
-                          <source src={oil.audioUrl} type="audio/mpeg" />
+                          <source src={oil.audio_url} type="audio/mpeg" />
                           Ваш браузер не поддерживает аудио элемент.
                         </audio>
                         <p className="text-xs text-black/60 text-center mt-2">

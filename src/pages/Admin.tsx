@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ApplicationsList from '@/components/admin/ApplicationsList';
 import ContentEditor from '@/components/admin/ContentEditor';
 import DesignSettings from '@/components/admin/DesignSettings';
+import OilsManager from '@/components/admin/OilsManager';
 
 interface ContentItem {
   key: string;
@@ -49,6 +50,8 @@ export default function Admin() {
   const [content, setContent] = useState<Record<string, ContentItem>>({});
   const [applications, setApplications] = useState<Application[]>([]);
   const [designSettings, setDesignSettings] = useState<Record<string, DesignSettingsType>>({});
+  const [categories, setCategories] = useState<Array<{id: number; name: string; slug: string}>>([]);
+  const [oils, setOils] = useState<Array<{id: number; name: string; emoji: string; category_slug: string; description: string; audio_url: string}>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -61,6 +64,8 @@ export default function Admin() {
     fetchContent();
     fetchApplications();
     fetchDesignSettings();
+    fetchOils();
+    fetchCategories();
   }, [navigate]);
 
   const fetchContent = async () => {
@@ -137,6 +142,31 @@ export default function Admin() {
     } catch (error) {
       console.error('Ошибка загрузки настроек дизайна:', error);
     }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=categories');
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error('Ошибка загрузки категорий:', error);
+    }
+  };
+
+  const fetchOils = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=oils');
+      const data = await response.json();
+      setOils(data);
+    } catch (error) {
+      console.error('Ошибка загрузки масел:', error);
+    }
+  };
+
+  const handleRefreshOils = () => {
+    fetchOils();
+    fetchCategories();
   };
 
   const updateDesignSetting = async (elementKey: string, settings: Partial<DesignSettingsType>) => {
@@ -250,6 +280,7 @@ export default function Admin() {
             <TabsTrigger value="about">О бренде</TabsTrigger>
             <TabsTrigger value="features">Особенности</TabsTrigger>
             <TabsTrigger value="video">Видео</TabsTrigger>
+            <TabsTrigger value="oils">Каталог масел</TabsTrigger>
             <TabsTrigger value="design">Дизайн</TabsTrigger>
           </TabsList>
 
@@ -269,6 +300,14 @@ export default function Admin() {
               />
             </TabsContent>
           ))}
+
+          <TabsContent value="oils">
+            <OilsManager
+              categories={categories}
+              oils={oils}
+              onRefresh={handleRefreshOils}
+            />
+          </TabsContent>
 
           <TabsContent value="design">
             <DesignSettings
