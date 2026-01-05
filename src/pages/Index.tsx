@@ -24,11 +24,18 @@ export default function Index() {
     features_subtitle: { value: 'Когда вы приходитесь к продуктам...' }
   });
 
+  const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
+
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
       .then(res => res.json())
       .then(data => setContent(data))
       .catch(err => console.error('Ошибка загрузки контента:', err));
+
+    fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638')
+      .then(res => res.json())
+      .then(data => setDesignSettings(data))
+      .catch(err => console.error('Ошибка загрузки настроек дизайна:', err));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,8 +61,18 @@ export default function Index() {
     }
   };
 
+  const pinSize = designSettings['pin_icon_size']?.position_x || 128;
+  const pinTop = designSettings['pin_icon_size']?.position_y || 12;
+  const pinMarginLeft = designSettings['pin_icon_size']?.margin_left || 0;
+  const pinMarginRight = designSettings['pin_icon_size']?.margin_right || 0;
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{
+      '--pin-size': `${pinSize}px`,
+      '--pin-top': `${pinTop}px`,
+      '--pin-margin-left': `${pinMarginLeft}px`,
+      '--pin-margin-right': `${pinMarginRight}px`
+    } as React.CSSProperties}>
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex gap-8 items-center flex-1">
