@@ -32,6 +32,16 @@ interface DesignSettings {
   scale: number;
   z_index: number;
   is_visible: boolean;
+  margin_left: number;
+  margin_right: number;
+  margin_top: number;
+  margin_bottom: number;
+  padding_left: number;
+  padding_right: number;
+  padding_top: number;
+  padding_bottom: number;
+  font_size: number | null;
+  line_height: number | null;
 }
 
 export default function Admin() {
@@ -392,6 +402,138 @@ export default function Admin() {
                   <p className="text-xs text-foreground/50 mt-3">
                     Текущий размер: {designSettings['pin_icon_size']?.position_x || 128}x{designSettings['pin_icon_size']?.position_x || 128}px
                   </p>
+                </Card>
+
+                {/* Настройки текстовых элементов */}
+                <Card className="bg-black/30 border-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="Type" size={20} />
+                    Размеры текста и отступы
+                  </h3>
+                  <div className="space-y-6">
+                    {[
+                      { key: 'section_titles', label: 'Заголовки секций', defaultFont: 48 },
+                      { key: 'section_text', label: 'Основной текст', defaultFont: 16 },
+                      { key: 'hero_title', label: 'Главный заголовок', defaultFont: 64 },
+                      { key: 'hero_description', label: 'Описание героя', defaultFont: 18 }
+                    ].map(item => (
+                      <div key={item.key} className="border-b border-white/10 pb-4 last:border-0">
+                        <h4 className="font-medium mb-3">{item.label}</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Размер шрифта</label>
+                            <Input
+                              type="number"
+                              placeholder={item.defaultFont.toString()}
+                              value={designSettings[item.key]?.font_size || ''}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                font_size: parseInt(e.target.value) || null
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Отступ слева</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.margin_left || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                margin_left: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Отступ справа</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.margin_right || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                margin_right: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Отступ сверху</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.margin_top || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                margin_top: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Настройки карточек */}
+                <Card className="bg-black/30 border-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="Layout" size={20} />
+                    Карточки и блоки
+                  </h3>
+                  <div className="space-y-6">
+                    {[
+                      { key: 'white_cards', label: 'Белые карточки' },
+                      { key: 'feature_cards', label: 'Карточки особенностей' },
+                      { key: 'order_cards', label: 'Карточки заказа' }
+                    ].map(item => (
+                      <div key={item.key} className="border-b border-white/10 pb-4 last:border-0">
+                        <h4 className="font-medium mb-3">{item.label}</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Padding слева</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.padding_left || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                padding_left: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Padding справа</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.padding_right || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                padding_right: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Отступ между</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.margin_right || 0}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                margin_right: parseInt(e.target.value) || 0
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-foreground/70 mb-1 block">Ширина (px)</label>
+                            <Input
+                              type="number"
+                              value={designSettings[item.key]?.width || ''}
+                              onChange={(e) => updateDesignSetting(item.key, {
+                                width: parseInt(e.target.value) || null
+                              })}
+                              className="bg-black/30 border-white/10 text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </Card>
 
                 {/* Видимость секций */}

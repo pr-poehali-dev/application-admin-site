@@ -31,7 +31,10 @@ def handler(event: dict, context) -> dict:
                 with conn.cursor(cursor_factory=RealDictCursor) as cur:
                     cur.execute("""
                         SELECT element_key, position_x, position_y, width, height,
-                               rotation, scale, z_index, is_visible
+                               rotation, scale, z_index, is_visible,
+                               margin_left, margin_right, margin_top, margin_bottom,
+                               padding_left, padding_right, padding_top, padding_bottom,
+                               font_size, line_height
                         FROM t_p56936631_application_admin_si.design_settings
                     """)
                     settings = cur.fetchall()
@@ -46,7 +49,17 @@ def handler(event: dict, context) -> dict:
                     'rotation': setting['rotation'],
                     'scale': float(setting['scale']) if setting['scale'] else 1.0,
                     'z_index': setting['z_index'],
-                    'is_visible': setting['is_visible']
+                    'is_visible': setting['is_visible'],
+                    'margin_left': setting.get('margin_left', 0),
+                    'margin_right': setting.get('margin_right', 0),
+                    'margin_top': setting.get('margin_top', 0),
+                    'margin_bottom': setting.get('margin_bottom', 0),
+                    'padding_left': setting.get('padding_left', 0),
+                    'padding_right': setting.get('padding_right', 0),
+                    'padding_top': setting.get('padding_top', 0),
+                    'padding_bottom': setting.get('padding_bottom', 0),
+                    'font_size': setting.get('font_size'),
+                    'line_height': float(setting['line_height']) if setting.get('line_height') else None
                 }
             
             return {
@@ -87,8 +100,11 @@ def handler(event: dict, context) -> dict:
                 with conn.cursor() as cur:
                     cur.execute("""
                         INSERT INTO t_p56936631_application_admin_si.design_settings 
-                        (element_key, position_x, position_y, width, height, rotation, scale, z_index, is_visible)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        (element_key, position_x, position_y, width, height, rotation, scale, z_index, is_visible,
+                         margin_left, margin_right, margin_top, margin_bottom,
+                         padding_left, padding_right, padding_top, padding_bottom,
+                         font_size, line_height)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (element_key) 
                         DO UPDATE SET 
                             position_x = EXCLUDED.position_x,
@@ -99,6 +115,16 @@ def handler(event: dict, context) -> dict:
                             scale = EXCLUDED.scale,
                             z_index = EXCLUDED.z_index,
                             is_visible = EXCLUDED.is_visible,
+                            margin_left = EXCLUDED.margin_left,
+                            margin_right = EXCLUDED.margin_right,
+                            margin_top = EXCLUDED.margin_top,
+                            margin_bottom = EXCLUDED.margin_bottom,
+                            padding_left = EXCLUDED.padding_left,
+                            padding_right = EXCLUDED.padding_right,
+                            padding_top = EXCLUDED.padding_top,
+                            padding_bottom = EXCLUDED.padding_bottom,
+                            font_size = EXCLUDED.font_size,
+                            line_height = EXCLUDED.line_height,
                             updated_at = CURRENT_TIMESTAMP
                     """, (
                         element_key,
@@ -109,7 +135,17 @@ def handler(event: dict, context) -> dict:
                         body.get('rotation', 0),
                         body.get('scale', 1.0),
                         body.get('z_index', 1),
-                        body.get('is_visible', True)
+                        body.get('is_visible', True),
+                        body.get('margin_left', 0),
+                        body.get('margin_right', 0),
+                        body.get('margin_top', 0),
+                        body.get('margin_bottom', 0),
+                        body.get('padding_left', 0),
+                        body.get('padding_right', 0),
+                        body.get('padding_top', 0),
+                        body.get('padding_bottom', 0),
+                        body.get('font_size'),
+                        body.get('line_height')
                     ))
                     conn.commit()
             
