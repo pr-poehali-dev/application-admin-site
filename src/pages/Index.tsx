@@ -282,7 +282,7 @@ export default function Index() {
                 { step: 3, key: 'order_step_3' }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
-                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3 py-[17px]">
+                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3 py-2.5">
                     <span className="text-4xl font-bold text-black">{item.step}</span>
                     <p className="text-sm text-black text-center font-medium">
                       {content[item.key]?.value || 'Шаг ' + item.step}
