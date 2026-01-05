@@ -1,6 +1,5 @@
 import json
 import os
-import bcrypt
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -26,16 +25,15 @@ def handler(event: dict, context):
                 body_str = '{}'
             body = json.loads(body_str)
             email = body.get('email')
-            password = body.get('password')
             
-            if not email or not password:
+            if not email:
                 return {
                     'statusCode': 400,
                     'headers': {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     },
-                    'body': json.dumps({'error': 'Email и пароль обязательны'})
+                    'body': json.dumps({'error': 'Email обязателен'})
                 }
             
             conn = psycopg2.connect(os.environ['DATABASE_URL'])
@@ -57,22 +55,7 @@ def handler(event: dict, context):
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     },
-                    'body': json.dumps({'error': 'Неверный email или пароль'})
-                }
-            
-            password_match = bcrypt.checkpw(
-                password.encode('utf-8'),
-                admin['password_hash'].encode('utf-8')
-            )
-            
-            if not password_match:
-                return {
-                    'statusCode': 401,
-                    'headers': {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    'body': json.dumps({'error': 'Неверный email или пароль'})
+                    'body': json.dumps({'error': 'Email не найден'})
                 }
             
             return {
