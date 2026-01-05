@@ -226,7 +226,7 @@ export default function Index() {
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">
               {oils.slice(0, 6).map((oil) => (
                 <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4 py-12">
                   <div className="flex flex-col items-center gap-3">
