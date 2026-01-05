@@ -134,13 +134,15 @@ export default function Index() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { title: 'ТЕКСТ' },
-                { title: 'ТЕКСТ' },
-                { title: 'ТЕКСТ' },
-                { title: 'ТЕКСТ' }
+                { key: 'feature_1', fallback: 'Ручной отжим' },
+                { key: 'feature_2', fallback: 'Натуральные ингредиенты' },
+                { key: 'feature_3', fallback: 'Семейные традиции' },
+                { key: 'feature_4', fallback: 'Без примесей' }
               ].map((item, idx) => (
                 <div key={idx} className="sticker-pin bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square">
-                  <span className="text-2xl font-bold text-black">{item.title}</span>
+                  <span className="text-lg font-bold text-black text-center leading-tight">
+                    {content[item.key]?.value || item.fallback}
+                  </span>
                 </div>
               ))}
             </div>
@@ -195,13 +197,16 @@ export default function Index() {
             </p>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { step: 1 },
-                { step: 2 },
-                { step: 3 }
+                { step: 1, key: 'order_step_1' },
+                { step: 2, key: 'order_step_2' },
+                { step: 3, key: 'order_step_3' }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
-                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex items-center justify-center">
+                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
                     <span className="text-4xl font-bold text-black">{item.step}</span>
+                    <p className="text-sm text-black text-center font-medium">
+                      {content[item.key]?.value || 'Шаг ' + item.step}
+                    </p>
                   </div>
                   {idx < 2 && (
                     <Icon name="ArrowRight" className="hidden md:block text-foreground/40 absolute -right-8 top-1/2 -translate-y-1/2" size={32} />
