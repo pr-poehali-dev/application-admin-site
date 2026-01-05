@@ -84,7 +84,7 @@
   .sticker-pin::before {
     content: "";
     position: absolute;
-    top: var(--pin-top, 12px);
+    top: 50%;
     left: 50%;
     width: var(--pin-size, 128px);
     height: var(--pin-size, 128px);
@@ -93,7 +93,7 @@
     background-image: url("https://cdn.poehali.dev/files/Group 210.png");
     background-size: contain;
     background-repeat: no-repeat;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     z-index: 10;
   }
 
