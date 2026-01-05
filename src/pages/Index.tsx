@@ -161,31 +161,37 @@ export default function Index() {
               {content.video_section_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <VideoPlayer 
-                url={content.video_main?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
-                className="sticker-pin aspect-video rounded-xl"
-              />
-              <div className="grid grid-cols-2 gap-3">
-                {['video_1', 'video_2', 'video_3', 'video_4'].map((key, idx) => (
-                  <VideoPlayer 
-                    key={idx}
-                    url={content[key]?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
-                    className="sticker-pin aspect-video rounded-lg"
-                  />
-                ))}
+              <div className="relative">
+                <VideoPlayer 
+                  url={content.video_main?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
+                  className="sticker-pin aspect-video rounded-xl"
+                />
+                <div className="flex justify-center mt-4">
+                  <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
+                    <Icon name="Play" size={18} className="mr-2" />
+                    {content.btn_video?.value || 'Смотреть видео'}
+                  </Button>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-wrap gap-4 mt-6">
-              <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
-                <Icon name="Play" size={18} className="mr-2" />
-                {content.btn_video?.value || 'Смотреть видео'}
-              </Button>
-              <Link to="/videos">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 rounded-full px-6">
-                  <Icon name="PlayCircle" size={18} className="mr-2" />
-                  Смотреть все видео
-                </Button>
-              </Link>
+              <div className="relative">
+                <div className="grid grid-cols-2 gap-3">
+                  {['video_1', 'video_2', 'video_3', 'video_4'].map((key, idx) => (
+                    <VideoPlayer 
+                      key={idx}
+                      url={content[key]?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
+                      className="sticker-pin aspect-video rounded-lg"
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-center mt-4">
+                  <Link to="/videos">
+                    <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 rounded-full px-6">
+                      <Icon name="PlayCircle" size={18} className="mr-2" />
+                      Смотреть все видео
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </Card>
         </div>
