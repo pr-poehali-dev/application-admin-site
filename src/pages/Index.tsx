@@ -218,6 +218,47 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {content.audio_section_title?.value || 'Послушать масло'}
+            </h2>
+            <p className="text-sm text-foreground/70 mb-8">
+              {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="sticker-pin bg-white/95 p-8 rounded-xl flex flex-col items-center justify-center gap-6">
+                <Icon name="Music" size={64} className="text-black" />
+                <p className="text-black text-center font-medium">
+                  {content.audio_description?.value || 'Уникальный звук отжима масла'}
+                </p>
+              </div>
+              <div className="space-y-4">
+                <div className="bg-black/30 p-6 rounded-xl space-y-4">
+                  <audio 
+                    controls 
+                    className="w-full"
+                    style={{ filter: 'invert(0.85) hue-rotate(180deg)' }}
+                  >
+                    <source src={content.audio_file?.value || ''} type="audio/mpeg" />
+                    Ваш браузер не поддерживает аудио элемент.
+                  </audio>
+                  <p className="text-sm text-foreground/70 text-center">
+                    {content.audio_caption?.value || 'Звук процесса холодного отжима'}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
+                  <p className="text-sm text-foreground/90 leading-relaxed">
+                    {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      <section className="py-16 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
               {content.order_title?.value || 'Как заказать?'}
             </h2>
             <p className="text-sm text-foreground/70 mb-8">
