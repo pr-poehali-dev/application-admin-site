@@ -23,10 +23,22 @@ interface Application {
   created_at: string;
 }
 
+interface DesignSettings {
+  position_x: number;
+  position_y: number;
+  width: number | null;
+  height: number | null;
+  rotation: number;
+  scale: number;
+  z_index: number;
+  is_visible: boolean;
+}
+
 export default function Admin() {
   const navigate = useNavigate();
   const [content, setContent] = useState<Record<string, ContentItem>>({});
   const [applications, setApplications] = useState<Application[]>([]);
+  const [designSettings, setDesignSettings] = useState<Record<string, DesignSettings>>({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [loading, setLoading] = useState(true);
@@ -40,6 +52,7 @@ export default function Admin() {
 
     fetchContent();
     fetchApplications();
+    fetchDesignSettings();
   }, [navigate]);
 
   const fetchContent = async () => {
@@ -114,6 +127,55 @@ export default function Admin() {
     }
   };
 
+  const fetchDesignSettings = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638');
+      const data = await response.json();
+      setDesignSettings(data);
+    } catch (error) {
+      console.error('Ошибка загрузки настроек дизайна:', error);
+    }
+  };
+
+  const updateDesignSetting = async (elementKey: string, settings: Partial<DesignSettings>) => {
+    try {
+      const currentSettings = designSettings[elementKey] || {
+        position_x: 0,
+        position_y: 0,
+        width: null,
+        height: null,
+        rotation: 0,
+        scale: 1.0,
+        z_index: 1,
+        is_visible: true
+      };
+
+      const response = await fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          element_key: elementKey,
+          ...currentSettings,
+          ...settings
+        }),
+      });
+
+      if (response.ok) {
+        setDesignSettings({
+          ...designSettings,
+          [elementKey]: {
+            ...currentSettings,
+            ...settings
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Ошибка обновления настроек:', error);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('admin');
     navigate('/login');
@@ -176,6 +238,7 @@ export default function Admin() {
             <TabsTrigger value="about">О бренде</TabsTrigger>
             <TabsTrigger value="features">Особенности</TabsTrigger>
             <TabsTrigger value="video">Видео</TabsTrigger>
+            <TabsTrigger value="design">Дизайн</TabsTrigger>
           </TabsList>
 
           <TabsContent value="applications">
@@ -291,6 +354,90 @@ export default function Admin() {
               </Card>
             </TabsContent>
           ))}
+
+          <TabsContent value="design">
+            <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-[2rem]">
+              <h2 className="text-2xl font-bold mb-6">Настройки дизайна</h2>
+              <div className="space-y-6">
+                {/* Размер кнопок-иконок */}
+                <Card className="bg-black/30 border-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="Pin" size={20} />
+                    Размер красных кнопок на карточках
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-foreground/70 mb-2 block">Ширина (px)</label>
+                      <Input
+                        type="number"
+                        value={designSettings['pin_icon_size']?.position_x || 128}
+                        onChange={(e) => updateDesignSetting('pin_icon_size', {
+                          position_x: parseInt(e.target.value) || 128
+                        })}
+                        className="bg-black/30 border-white/10"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-foreground/70 mb-2 block">Отступ сверху (px)</label>
+                      <Input
+                        type="number"
+                        value={designSettings['pin_icon_size']?.position_y || 12}
+                        onChange={(e) => updateDesignSetting('pin_icon_size', {
+                          position_y: parseInt(e.target.value) || 12
+                        })}
+                        className="bg-black/30 border-white/10"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-foreground/50 mt-3">
+                    Текущий размер: {designSettings['pin_icon_size']?.position_x || 128}x{designSettings['pin_icon_size']?.position_x || 128}px
+                  </p>
+                </Card>
+
+                {/* Видимость секций */}
+                <Card className="bg-black/30 border-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Icon name="Eye" size={20} />
+                    Видимость секций
+                  </h3>
+                  <div className="space-y-3">
+                    {[
+                      { key: 'hero_section', label: 'Главный экран' },
+                      { key: 'about_section', label: 'О бренде' },
+                      { key: 'features_section', label: 'Особенности' },
+                      { key: 'video_section', label: 'Видео' },
+                      { key: 'order_section', label: 'Как заказать' },
+                      { key: 'contact_section', label: 'Контакты' }
+                    ].map(section => (
+                      <div key={section.key} className="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                        <span className="text-foreground">{section.label}</span>
+                        <Button
+                          size="sm"
+                          variant={designSettings[section.key]?.is_visible !== false ? 'default' : 'outline'}
+                          onClick={() => updateDesignSetting(section.key, {
+                            is_visible: !(designSettings[section.key]?.is_visible !== false)
+                          })}
+                        >
+                          {designSettings[section.key]?.is_visible !== false ? (
+                            <><Icon name="Eye" size={16} className="mr-2" /> Видно</>
+                          ) : (
+                            <><Icon name="EyeOff" size={16} className="mr-2" /> Скрыто</>
+                          )}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                  <p className="text-sm text-blue-300 flex items-center gap-2">
+                    <Icon name="Info" size={16} />
+                    После изменения настроек обновите главную страницу, чтобы увидеть результат
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
