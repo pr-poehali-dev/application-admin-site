@@ -25,33 +25,69 @@ export default function Index() {
   });
 
   const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const oilCatalog = [
     { 
       name: content.oil_1_name?.value || 'Масло кедрового ореха',
       emoji: '🌰',
+      category: 'ореховые',
       description: content.oil_1_desc?.value || 'Насыщенный аромат с ореховыми нотами',
       audioUrl: content.oil_1_audio?.value || ''
     },
     { 
       name: content.oil_2_name?.value || 'Масло грецкого ореха',
       emoji: '🥜',
+      category: 'ореховые',
       description: content.oil_2_desc?.value || 'Мягкий вкус с легкой горчинкой',
       audioUrl: content.oil_2_audio?.value || ''
     },
     { 
       name: content.oil_3_name?.value || 'Льняное масло',
       emoji: '🌾',
+      category: 'семенные',
       description: content.oil_3_desc?.value || 'Богатое омега-3 кислотами',
       audioUrl: content.oil_3_audio?.value || ''
     },
     { 
       name: content.oil_4_name?.value || 'Тыквенное масло',
       emoji: '🎃',
+      category: 'семенные',
       description: content.oil_4_desc?.value || 'Глубокий вкус с пикантными нотами',
       audioUrl: content.oil_4_audio?.value || ''
+    },
+    { 
+      name: content.oil_5_name?.value || 'Подсолнечное масло',
+      emoji: '🌻',
+      category: 'семенные',
+      description: content.oil_5_desc?.value || 'Классический вкус для любых блюд',
+      audioUrl: content.oil_5_audio?.value || ''
+    },
+    { 
+      name: content.oil_6_name?.value || 'Масло фундука',
+      emoji: '🥥',
+      category: 'ореховые',
+      description: content.oil_6_desc?.value || 'Нежный ореховый вкус',
+      audioUrl: content.oil_6_audio?.value || ''
     }
   ];
+
+  const categories = [
+    { id: 'ореховые', label: 'Ореховые масла' },
+    { id: 'семенные', label: 'Семенные масла' }
+  ];
+
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(c => c !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const filteredOils = selectedCategories.length === 0 
+    ? oilCatalog 
+    : oilCatalog.filter(oil => selectedCategories.includes(oil.category));
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
@@ -250,41 +286,78 @@ export default function Index() {
             <p className="text-sm text-foreground/70 mb-8">
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
-            <div className="grid md:grid-cols-2 gap-6">
-              {oilCatalog.map((oil, index) => (
-                <div key={index} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
-                  <div className="flex items-center gap-4">
-                    <span className="text-5xl">{oil.emoji}</span>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-black">{oil.name}</h3>
-                      <p className="text-sm text-black/70">{oil.description}</p>
+            
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-64 space-y-6">
+                <div className="bg-black/30 p-6 rounded-xl space-y-4">
+                  <h3 className="font-semibold text-lg flex items-center gap-2">
+                    <Icon name="Filter" size={20} />
+                    Категории
+                  </h3>
+                  <div className="space-y-3">
+                    {categories.map(category => (
+                      <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category.id)}
+                          onChange={() => toggleCategory(category.id)}
+                          className="w-5 h-5 rounded border-2 border-foreground/30 bg-transparent checked:bg-primary checked:border-primary cursor-pointer"
+                        />
+                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">
+                          {category.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
+                  <div className="flex items-start gap-3">
+                    <Icon name="Music" size={20} className="text-primary flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Почему звук важен?</h4>
+                      <p className="text-xs text-foreground/90 leading-relaxed">
+                        {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте звук настоящего качества.'}
+                      </p>
                     </div>
                   </div>
-                  <div className="bg-black/10 p-4 rounded-lg">
-                    <audio 
-                      controls 
-                      className="w-full"
-                      style={{ filter: 'invert(0.2) sepia(0.1)' }}
-                    >
-                      <source src={oil.audioUrl} type="audio/mpeg" />
-                      Ваш браузер не поддерживает аудио элемент.
-                    </audio>
-                    <p className="text-xs text-black/60 text-center mt-2">
-                      Звук отжима
-                    </p>
+                </div>
+              </div>
+
+              <div className="flex-1">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {filteredOils.map((oil, index) => (
+                    <div key={index} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-5xl">{oil.emoji}</span>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-black">{oil.name}</h3>
+                          <p className="text-sm text-black/70">{oil.description}</p>
+                        </div>
+                      </div>
+                      <div className="bg-black/10 p-4 rounded-lg">
+                        <audio 
+                          controls 
+                          className="w-full"
+                          style={{ filter: 'invert(0.2) sepia(0.1)' }}
+                        >
+                          <source src={oil.audioUrl} type="audio/mpeg" />
+                          Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                        <p className="text-xs text-black/60 text-center mt-2">
+                          Звук отжима
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {filteredOils.length === 0 && (
+                  <div className="text-center py-12">
+                    <Icon name="Search" size={48} className="mx-auto mb-4 text-foreground/30" />
+                    <p className="text-foreground/70">Не найдено масел в выбранных категориях</p>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
-              <div className="flex items-start gap-3">
-                <Icon name="Music" size={24} className="text-primary flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold mb-2">Почему звук важен?</h4>
-                  <p className="text-sm text-foreground/90 leading-relaxed">
-                    {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции каждого сорта.'}
-                  </p>
-                </div>
+                )}
               </div>
             </div>
           </Card>
