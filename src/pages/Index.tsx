@@ -175,13 +175,14 @@ export default function Index() {
                 ))}
               </div>
             </div>
-            <div className="flex gap-4 mt-6">
+            <div className="flex flex-wrap gap-4 mt-6">
               <Button variant="ghost" className="border border-white/20 text-foreground hover:bg-white/5 rounded-full">
                 {content.btn_catalog?.value || 'Скачать каталог (PDF)'}
               </Button>
               <Link to="/videos">
-                <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full">
-                  {content.btn_video?.value || 'Смотреть все видео'}
+                <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
+                  <Icon name="PlayCircle" size={20} className="mr-2" />
+                  Смотреть все видео
                 </Button>
               </Link>
             </div>
