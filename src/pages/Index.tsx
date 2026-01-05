@@ -58,12 +58,12 @@ export default function Index() {
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex gap-8 items-center flex-1">
-            <a href="#catalog" className="text-foreground hover:text-primary transition-colors text-sm">Каталог</a>
-            <a href="#video" className="text-foreground hover:text-primary transition-colors text-sm">Видео</a>
-            <a href="#contacts" className="text-foreground hover:text-primary transition-colors text-sm">Контакты</a>
+            <a href="#catalog" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_catalog?.value || 'Каталог'}</a>
+            <a href="#video" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_video?.value || 'Видео'}</a>
+            <a href="#contacts" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_contacts?.value || 'Контакты'}</a>
           </div>
           <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
-            Оставить заявку
+            {content.btn_submit?.value || 'Оставить заявку'}
           </Button>
         </div>
       </nav>
@@ -81,10 +81,10 @@ export default function Index() {
                 </p>
                 <div className="flex gap-4">
                   <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full">
-                    Скачать каталог (PDF)
+                    {content.btn_catalog?.value || 'Скачать каталог (PDF)'}
                   </Button>
                   <Button variant="ghost" className="border border-white/20 text-foreground hover:bg-white/5 rounded-full">
-                    Смотреть видео
+                    {content.btn_video?.value || 'Смотреть видео'}
                   </Button>
                 </div>
               </div>
@@ -110,14 +110,12 @@ export default function Index() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="sticker-pin bg-white/95 p-6 rounded-xl">
                 <p className="text-sm text-black leading-relaxed">
-                  Яворский Дворъ Масел создаёт в честь рода моего деда. Яворского Константина. 
-                  В тяжёлые послевоенные времена мои дети не могли носить его фамилию. Сегодня имя возвращено с честью.
+                  {content.history_text_1?.value}
                 </p>
               </div>
               <div className="sticker-pin bg-white/95 p-6 rounded-xl">
                 <p className="text-sm text-black leading-relaxed">
-                  Возрождаем связь поколений через ремесло. Каждый продукт — это познание традиций, 
-                  воплощённые в живых маслах и традиционных формах. Это почтение Роду и возвращение родовой силы в повседневность.
+                  {content.history_text_2?.value}
                 </p>
               </div>
             </div>
@@ -154,11 +152,10 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Как мы создаем наше масло?
+              {content.video_section_title?.value || 'Как мы создаем наше масло?'}
             </h2>
             <p className="text-sm text-foreground/70 mb-8">
-              Посмотрите весь путь — от натуральных орехов и семян до густого, ароматного масла 
-              сыродавленного о масла в вашей тарелке.
+              {content.video_section_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <VideoPlayer 
@@ -177,10 +174,10 @@ export default function Index() {
             </div>
             <div className="flex gap-4 mt-6">
               <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full">
-                Смотреть видео
+                {content.btn_video?.value || 'Смотреть видео'}
               </Button>
               <Button variant="ghost" className="border border-white/20 text-foreground hover:bg-white/5 rounded-full">
-                Скачать каталог (PDF)
+                {content.btn_catalog?.value || 'Скачать каталог (PDF)'}
               </Button>
             </div>
           </Card>
@@ -191,11 +188,10 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Как заказать?
+              {content.order_title?.value || 'Как заказать?'}
             </h2>
             <p className="text-sm text-foreground/70 mb-8">
-              Сыродавленное масло ручной работы. Без лишних примесей, только целебные орехи и семена, 
-              отжатые вручную с заботой о вкусе и пользе.
+              {content.order_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-3 gap-6">
               {[
@@ -222,11 +218,10 @@ export default function Index() {
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-[2rem]">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Оставить заявку
+                {content.contact_title?.value || 'Оставить заявку'}
               </h2>
               <p className="text-sm text-foreground/70 mb-6">
-                Сыродавленное масло ручной работы. Без лишних примесей, только целебные орехи и семена, 
-                отжатые вручную с заботой о вкусе и пользе.
+                {content.contact_subtitle?.value}
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <Input
@@ -251,7 +246,7 @@ export default function Index() {
                   className="bg-black/30 border-white/10 text-foreground placeholder:text-foreground/40 rounded-xl min-h-24"
                 />
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-black font-medium rounded-full py-6">
-                  Оставить заявку
+                  {content.btn_submit?.value || 'Оставить заявку'}
                 </Button>
               </form>
             </Card>
