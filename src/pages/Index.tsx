@@ -69,15 +69,15 @@ export default function Index() {
 
   const pinSize = designSettings['pin_icon_size']?.position_x || 128;
   const pinTop = designSettings['pin_icon_size']?.position_y || 12;
-  const pinMarginLeft = designSettings['pin_icon_size']?.margin_left || 0;
-  const pinMarginRight = designSettings['pin_icon_size']?.margin_right || 0;
+  const pinOffsetX = designSettings['pin_icon_size']?.margin_left || -30;
+  const contentPaddingTop = designSettings['pin_icon_size']?.padding_top || 5;
 
   return (
     <div className="min-h-screen" style={{
       '--pin-size': `${pinSize}px`,
       '--pin-top': `${pinTop}px`,
-      '--pin-margin-left': `${pinMarginLeft}px`,
-      '--pin-margin-right': `${pinMarginRight}px`
+      '--pin-offset-x': `${pinOffsetX}px`,
+      '--content-padding-top': `${contentPaddingTop}px`
     } as React.CSSProperties}>
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">

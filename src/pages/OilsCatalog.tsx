@@ -24,6 +24,7 @@ export default function OilsCatalog() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [oils, setOils] = useState<Oil[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=categories')
@@ -35,6 +36,11 @@ export default function OilsCatalog() {
       .then(res => res.json())
       .then(data => setOils(data))
       .catch(err => console.error('Ошибка загрузки масел:', err));
+
+    fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638')
+      .then(res => res.json())
+      .then(data => setDesignSettings(data))
+      .catch(err => console.error('Ошибка загрузки настроек дизайна:', err));
   }, []);
 
   const toggleCategory = (categorySlug: string) => {
@@ -49,8 +55,18 @@ export default function OilsCatalog() {
     ? oils 
     : oils.filter(oil => selectedCategories.includes(oil.category_slug));
 
+  const pinSize = designSettings['pin_icon_size']?.position_x || 128;
+  const pinTop = designSettings['pin_icon_size']?.position_y || 12;
+  const pinOffsetX = designSettings['pin_icon_size']?.margin_left || -30;
+  const contentPaddingTop = designSettings['pin_icon_size']?.padding_top || 5;
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{
+      '--pin-size': `${pinSize}px`,
+      '--pin-top': `${pinTop}px`,
+      '--pin-offset-x': `${pinOffsetX}px`,
+      '--content-padding-top': `${contentPaddingTop}px`
+    } as React.CSSProperties}>
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <Button 

@@ -38,11 +38,11 @@ export default function DesignSettings({ designSettings, onUpdate }: DesignSetti
         <Card className="bg-black/30 border-white/5 p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Icon name="Pin" size={20} />
-            Размер красных кнопок на карточках
+            Красные кнопки на карточках
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <label className="text-sm text-foreground/70 mb-2 block">Ширина (px)</label>
+              <label className="text-sm text-foreground/70 mb-2 block">Размер кнопки (px)</label>
               <Input
                 type="number"
                 value={designSettings['pin_icon_size']?.position_x || 128}
@@ -64,7 +64,7 @@ export default function DesignSettings({ designSettings, onUpdate }: DesignSetti
               />
             </div>
             <div>
-              <label className="text-sm text-foreground/70 mb-2 block">Отступ слева (px)</label>
+              <label className="text-sm text-foreground/70 mb-2 block">Смещение по горизонтали (px)</label>
               <Input
                 type="number"
                 value={designSettings['pin_icon_size']?.margin_left || 0}
@@ -72,23 +72,25 @@ export default function DesignSettings({ designSettings, onUpdate }: DesignSetti
                   margin_left: parseInt(e.target.value) || 0
                 })}
                 className="bg-black/30 border-white/10"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-foreground/70 mb-2 block">Отступ справа (px)</label>
-              <Input
-                type="number"
-                value={designSettings['pin_icon_size']?.margin_right || 0}
-                onChange={(e) => onUpdate('pin_icon_size', {
-                  margin_right: parseInt(e.target.value) || 0
-                })}
-                className="bg-black/30 border-white/10"
+                placeholder="0 = по центру"
               />
             </div>
           </div>
-          <p className="text-xs text-foreground/50 mt-3">
-            Текущий размер: {designSettings['pin_icon_size']?.position_x || 128}x{designSettings['pin_icon_size']?.position_x || 128}px
-          </p>
+          <div className="border-t border-white/10 pt-4">
+            <label className="text-sm text-foreground/70 mb-2 block">Отступ контента внутри карточек (px)</label>
+            <Input
+              type="number"
+              value={designSettings['pin_icon_size']?.padding_top || 5}
+              onChange={(e) => onUpdate('pin_icon_size', {
+                padding_top: parseInt(e.target.value) || 5
+              })}
+              className="bg-black/30 border-white/10 max-w-xs"
+              placeholder="5"
+            />
+            <p className="text-xs text-foreground/50 mt-2">
+              Сдвигает текст и контент вниз, не затрагивая кнопки
+            </p>
+          </div>
         </Card>
 
         {/* Настройки текстовых элементов */}
