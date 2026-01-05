@@ -56,16 +56,12 @@ export default function OilsCatalog() {
     : oils.filter(oil => selectedCategories.includes(oil.category_slug));
 
   const pinSize = designSettings['pin_icon_size']?.position_x || 128;
-  const pinTop = designSettings['pin_icon_size']?.position_y || 12;
   const pinOffsetX = designSettings['pin_icon_size']?.margin_left || -30;
-  const contentPaddingTop = designSettings['pin_icon_size']?.padding_top || 5;
 
   return (
     <div className="min-h-screen" style={{
       '--pin-size': `${pinSize}px`,
-      '--pin-top': `${pinTop}px`,
-      '--pin-offset-x': `${pinOffsetX}px`,
-      '--content-padding-top': `${contentPaddingTop}px`
+      '--pin-offset-x': `${pinOffsetX}px`
     } as React.CSSProperties}>
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
