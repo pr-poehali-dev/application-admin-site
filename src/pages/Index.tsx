@@ -175,7 +175,7 @@ export default function Index() {
                 ))}
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 mt-6">
+            <div className="flex flex-wrap gap-4 mt-6 mx-0 rounded-sm py-0 px-[38px]">
               <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
                 <Icon name="Play" size={18} className="mr-2" />
                 {content.btn_video?.value || 'Смотреть видео'}
