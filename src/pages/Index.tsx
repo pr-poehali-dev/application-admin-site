@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -25,6 +25,42 @@ export default function Index() {
   });
 
   const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
+  const [selectedOil, setSelectedOil] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const oilCatalog = [
+    { 
+      name: content.oil_1_name?.value || 'Масло кедрового ореха',
+      emoji: '🌰',
+      description: content.oil_1_desc?.value || 'Насыщенный аромат с ореховыми нотами',
+      audioUrl: content.oil_1_audio?.value || ''
+    },
+    { 
+      name: content.oil_2_name?.value || 'Масло грецкого ореха',
+      emoji: '🥜',
+      description: content.oil_2_desc?.value || 'Мягкий вкус с легкой горчинкой',
+      audioUrl: content.oil_2_audio?.value || ''
+    },
+    { 
+      name: content.oil_3_name?.value || 'Льняное масло',
+      emoji: '🌾',
+      description: content.oil_3_desc?.value || 'Богатое омега-3 кислотами',
+      audioUrl: content.oil_3_audio?.value || ''
+    },
+    { 
+      name: content.oil_4_name?.value || 'Тыквенное масло',
+      emoji: '🎃',
+      description: content.oil_4_desc?.value || 'Глубокий вкус с пикантными нотами',
+      audioUrl: content.oil_4_audio?.value || ''
+    }
+  ];
+
+  const handleOilSelect = (index: number) => {
+    setSelectedOil(index);
+    if (audioRef.current) {
+      audioRef.current.load();
+    }
+  };
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
@@ -223,31 +259,72 @@ export default function Index() {
             <p className="text-sm text-foreground/70 mb-8">
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="sticker-pin bg-white/95 p-8 rounded-xl flex flex-col items-center justify-center gap-6">
-                <Icon name="Music" size={64} className="text-black" />
-                <p className="text-black text-center font-medium">
-                  {content.audio_description?.value || 'Уникальный звук отжима масла'}
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-black/30 p-6 rounded-xl space-y-4">
-                  <audio 
-                    controls 
-                    className="w-full"
-                    style={{ filter: 'invert(0.85) hue-rotate(180deg)' }}
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {oilCatalog.map((oil, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleOilSelect(index)}
+                    className={`sticker-pin p-6 rounded-xl flex flex-col items-center justify-center gap-3 transition-all ${
+                      selectedOil === index 
+                        ? 'bg-primary text-black ring-4 ring-primary/50' 
+                        : 'bg-white/95 text-black hover:bg-white'
+                    }`}
                   >
-                    <source src={content.audio_file?.value || ''} type="audio/mpeg" />
-                    Ваш браузер не поддерживает аудио элемент.
-                  </audio>
-                  <p className="text-sm text-foreground/70 text-center">
-                    {content.audio_caption?.value || 'Звук процесса холодного отжима'}
-                  </p>
+                    <span className="text-5xl">{oil.emoji}</span>
+                    <span className="text-sm font-medium text-center leading-tight">
+                      {oil.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-black/30 p-8 rounded-xl space-y-6">
+                  <div className="flex items-center gap-4">
+                    <span className="text-6xl">{oilCatalog[selectedOil].emoji}</span>
+                    <div>
+                      <h3 className="text-2xl font-bold">{oilCatalog[selectedOil].name}</h3>
+                      <p className="text-sm text-foreground/70">{oilCatalog[selectedOil].description}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <audio 
+                      ref={audioRef}
+                      controls 
+                      className="w-full"
+                      style={{ filter: 'invert(0.85) hue-rotate(180deg)' }}
+                    >
+                      <source src={oilCatalog[selectedOil].audioUrl} type="audio/mpeg" />
+                      Ваш браузер не поддерживает аудио элемент.
+                    </audio>
+                    <p className="text-xs text-foreground/60 text-center">
+                      {content.audio_caption?.value || 'Звук процесса холодного отжима'}
+                    </p>
+                  </div>
                 </div>
-                <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
-                  <p className="text-sm text-foreground/90 leading-relaxed">
-                    {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции.'}
-                  </p>
+                
+                <div className="space-y-4">
+                  <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Icon name="Music" size={24} className="text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-2">Почему звук важен?</h4>
+                        <p className="text-sm text-foreground/90 leading-relaxed">
+                          {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-black/20 p-6 rounded-xl border border-white/10">
+                    <div className="flex items-start gap-3">
+                      <Icon name="Info" size={20} className="text-foreground/60 flex-shrink-0 mt-1" />
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        {content.audio_note?.value || 'Выберите сорт масла из каталога выше, чтобы услышать уникальный звук его отжима'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
