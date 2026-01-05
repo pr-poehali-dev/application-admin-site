@@ -228,15 +228,15 @@ export default function Index() {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {oils.slice(0, 6).map((oil) => (
-                <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
-                  <div className="flex flex-col items-center gap-3">
-                    <span className="text-5xl">{oil.emoji}</span>
+                <div key={oil.id} className="sticker-pin bg-white/95 p-4 rounded-xl space-y-3">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-4xl">{oil.emoji}</span>
                     <div className="text-center">
-                      <h3 className="text-lg font-bold text-black">{oil.name}</h3>
+                      <h3 className="text-base font-bold text-black">{oil.name}</h3>
                       <p className="text-xs text-black/70 mt-1">{oil.description}</p>
                     </div>
                   </div>
-                  <div className="bg-black/10 p-3 rounded-lg">
+                  <div className="bg-black/10 p-2 rounded-lg">
                     <audio 
                       controls 
                       className="w-full"
