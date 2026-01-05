@@ -25,21 +25,7 @@ export default function Index() {
   });
 
   const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [categories, setCategories] = useState<Array<{id: number; name: string; slug: string}>>([]);
   const [oils, setOils] = useState<Array<{id: number; name: string; emoji: string; category_slug: string; description: string; audio_url: string}>>([]);
-
-  const toggleCategory = (categorySlug: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(categorySlug) 
-        ? prev.filter(c => c !== categorySlug)
-        : [...prev, categorySlug]
-    );
-  };
-
-  const filteredOils = selectedCategories.length === 0 
-    ? oils 
-    : oils.filter(oil => selectedCategories.includes(oil.category_slug));
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
@@ -51,11 +37,6 @@ export default function Index() {
       .then(res => res.json())
       .then(data => setDesignSettings(data))
       .catch(err => console.error('Ошибка загрузки настроек дизайна:', err));
-
-    fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(err => console.error('Ошибка загрузки категорий:', err));
 
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=oils')
       .then(res => res.json())
@@ -249,78 +230,37 @@ export default function Index() {
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
             
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-full md:w-64 space-y-6">
-                <div className="bg-black/30 p-6 rounded-xl space-y-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2">
-                    <Icon name="Filter" size={20} />
-                    Категории
-                  </h3>
-                  <div className="space-y-3">
-                    {categories.map(category => (
-                      <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          checked={selectedCategories.includes(category.slug)}
-                          onChange={() => toggleCategory(category.slug)}
-                          className="w-5 h-5 rounded border-2 border-foreground/30 bg-transparent checked:bg-primary checked:border-primary cursor-pointer"
-                        />
-                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">
-                          {category.name}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
-                  <div className="flex items-start gap-3">
-                    <Icon name="Music" size={20} className="text-primary flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2 text-sm">Почему звук важен?</h4>
-                      <p className="text-xs text-foreground/90 leading-relaxed">
-                        {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте звук настоящего качества.'}
-                      </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+              {oils.slice(0, 6).map((oil) => (
+                <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
+                  <div className="flex flex-col items-center gap-3">
+                    <span className="text-5xl">{oil.emoji}</span>
+                    <div className="text-center">
+                      <h3 className="text-lg font-bold text-black">{oil.name}</h3>
+                      <p className="text-xs text-black/70 mt-1">{oil.description}</p>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {filteredOils.map((oil, index) => (
-                    <div key={index} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
-                      <div className="flex items-center gap-4">
-                        <span className="text-5xl">{oil.emoji}</span>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-black">{oil.name}</h3>
-                          <p className="text-sm text-black/70">{oil.description}</p>
-                        </div>
-                      </div>
-                      <div className="bg-black/10 p-4 rounded-lg">
-                        <audio 
-                          controls 
-                          className="w-full"
-                          style={{ filter: 'invert(0.2) sepia(0.1)' }}
-                        >
-                          <source src={oil.audio_url} type="audio/mpeg" />
-                          Ваш браузер не поддерживает аудио элемент.
-                        </audio>
-                        <p className="text-xs text-black/60 text-center mt-2">
-                          Звук отжима
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {filteredOils.length === 0 && (
-                  <div className="text-center py-12">
-                    <Icon name="Search" size={48} className="mx-auto mb-4 text-foreground/30" />
-                    <p className="text-foreground/70">Не найдено масел в выбранных категориях</p>
+                  <div className="bg-black/10 p-3 rounded-lg">
+                    <audio 
+                      controls 
+                      className="w-full"
+                      style={{ filter: 'invert(0.2) sepia(0.1)' }}
+                    >
+                      <source src={oil.audio_url} type="audio/mpeg" />
+                      Ваш браузер не поддерживает аудио элемент.
+                    </audio>
                   </div>
-                )}
-              </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center">
+              <Link to="/oils">
+                <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-8 py-6 text-lg">
+                  <Icon name="Music" size={24} className="mr-2" />
+                  Послушать все масла ({oils.length})
+                </Button>
+              </Link>
             </div>
           </Card>
         </div>
