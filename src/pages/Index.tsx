@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -25,8 +25,6 @@ export default function Index() {
   });
 
   const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
-  const [selectedOil, setSelectedOil] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   const oilCatalog = [
     { 
@@ -54,13 +52,6 @@ export default function Index() {
       audioUrl: content.oil_4_audio?.value || ''
     }
   ];
-
-  const handleOilSelect = (index: number) => {
-    setSelectedOil(index);
-    if (audioRef.current) {
-      audioRef.current.load();
-    }
-  };
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5')
@@ -259,72 +250,40 @@ export default function Index() {
             <p className="text-sm text-foreground/70 mb-8">
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {oilCatalog.map((oil, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleOilSelect(index)}
-                    className={`sticker-pin p-6 rounded-xl flex flex-col items-center justify-center gap-3 transition-all ${
-                      selectedOil === index 
-                        ? 'bg-primary text-black ring-4 ring-primary/50' 
-                        : 'bg-white/95 text-black hover:bg-white'
-                    }`}
-                  >
-                    <span className="text-5xl">{oil.emoji}</span>
-                    <span className="text-sm font-medium text-center leading-tight">
-                      {oil.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-black/30 p-8 rounded-xl space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {oilCatalog.map((oil, index) => (
+                <div key={index} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
                   <div className="flex items-center gap-4">
-                    <span className="text-6xl">{oilCatalog[selectedOil].emoji}</span>
-                    <div>
-                      <h3 className="text-2xl font-bold">{oilCatalog[selectedOil].name}</h3>
-                      <p className="text-sm text-foreground/70">{oilCatalog[selectedOil].description}</p>
+                    <span className="text-5xl">{oil.emoji}</span>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-black">{oil.name}</h3>
+                      <p className="text-sm text-black/70">{oil.description}</p>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  <div className="bg-black/10 p-4 rounded-lg">
                     <audio 
-                      ref={audioRef}
                       controls 
                       className="w-full"
-                      style={{ filter: 'invert(0.85) hue-rotate(180deg)' }}
+                      style={{ filter: 'invert(0.2) sepia(0.1)' }}
                     >
-                      <source src={oilCatalog[selectedOil].audioUrl} type="audio/mpeg" />
+                      <source src={oil.audioUrl} type="audio/mpeg" />
                       Ваш браузер не поддерживает аудио элемент.
                     </audio>
-                    <p className="text-xs text-foreground/60 text-center">
-                      {content.audio_caption?.value || 'Звук процесса холодного отжима'}
+                    <p className="text-xs text-black/60 text-center mt-2">
+                      Звук отжима
                     </p>
                   </div>
                 </div>
-                
-                <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
-                    <div className="flex items-start gap-3 mb-3">
-                      <Icon name="Music" size={24} className="text-primary flex-shrink-0 mt-1" />
-                      <div>
-                        <h4 className="font-semibold mb-2">Почему звук важен?</h4>
-                        <p className="text-sm text-foreground/90 leading-relaxed">
-                          {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции.'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-black/20 p-6 rounded-xl border border-white/10">
-                    <div className="flex items-start gap-3">
-                      <Icon name="Info" size={20} className="text-foreground/60 flex-shrink-0 mt-1" />
-                      <p className="text-sm text-foreground/70 leading-relaxed">
-                        {content.audio_note?.value || 'Выберите сорт масла из каталога выше, чтобы услышать уникальный звук его отжима'}
-                      </p>
-                    </div>
-                  </div>
+              ))}
+            </div>
+            <div className="mt-6 bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
+              <div className="flex items-start gap-3">
+                <Icon name="Music" size={24} className="text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h4 className="font-semibold mb-2">Почему звук важен?</h4>
+                  <p className="text-sm text-foreground/90 leading-relaxed">
+                    {content.audio_info?.value || 'Каждая капля масла создается с любовью. Послушайте, как звучит настоящее качество и традиции каждого сорта.'}
+                  </p>
                 </div>
               </div>
             </div>
