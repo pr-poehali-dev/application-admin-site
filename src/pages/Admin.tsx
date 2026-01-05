@@ -375,7 +375,7 @@ export default function Admin() {
                     <Icon name="Pin" size={20} />
                     Размер красных кнопок на карточках
                   </h3>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
                       <label className="text-sm text-foreground/70 mb-2 block">Ширина (px)</label>
                       <Input
@@ -394,6 +394,28 @@ export default function Admin() {
                         value={designSettings['pin_icon_size']?.position_y || 12}
                         onChange={(e) => updateDesignSetting('pin_icon_size', {
                           position_y: parseInt(e.target.value) || 12
+                        })}
+                        className="bg-black/30 border-white/10"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-foreground/70 mb-2 block">Отступ слева (px)</label>
+                      <Input
+                        type="number"
+                        value={designSettings['pin_icon_size']?.margin_left || 0}
+                        onChange={(e) => updateDesignSetting('pin_icon_size', {
+                          margin_left: parseInt(e.target.value) || 0
+                        })}
+                        className="bg-black/30 border-white/10"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-foreground/70 mb-2 block">Отступ справа (px)</label>
+                      <Input
+                        type="number"
+                        value={designSettings['pin_icon_size']?.margin_right || 0}
+                        onChange={(e) => updateDesignSetting('pin_icon_size', {
+                          margin_right: parseInt(e.target.value) || 0
                         })}
                         className="bg-black/30 border-white/10"
                       />
