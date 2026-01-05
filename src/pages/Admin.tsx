@@ -175,6 +175,7 @@ export default function Admin() {
             <TabsTrigger value="hero">Главная</TabsTrigger>
             <TabsTrigger value="about">О бренде</TabsTrigger>
             <TabsTrigger value="features">Особенности</TabsTrigger>
+            <TabsTrigger value="video">Видео</TabsTrigger>
           </TabsList>
 
           <TabsContent value="applications">

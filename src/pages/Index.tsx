@@ -162,19 +162,14 @@ export default function Index() {
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <VideoPlayer 
-                url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                url={content.video_main?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
                 className="sticker-pin aspect-video rounded-xl"
               />
               <div className="grid grid-cols-2 gap-3">
-                {[
-                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                  'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-                ].map((url, idx) => (
+                {['video_1', 'video_2', 'video_3', 'video_4'].map((key, idx) => (
                   <VideoPlayer 
                     key={idx}
-                    url={url}
+                    url={content[key]?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
                     className="sticker-pin aspect-video rounded-lg"
                   />
                 ))}
