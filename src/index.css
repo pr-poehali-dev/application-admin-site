@@ -84,7 +84,7 @@
   .sticker-pin::before {
     content: "";
     position: absolute;
-    top: -48px;
+    top: 12px;
     left: 50%;
     width: 128px;
     height: 128px;
