@@ -84,10 +84,10 @@
   .sticker-pin::before {
     content: "";
     position: absolute;
-    top: -12px;
+    top: -48px;
     left: 50%;
-    width: 32px;
-    height: 32px;
+    width: 128px;
+    height: 128px;
     background-image: url("https://cdn.poehali.dev/files/Group 210.png");
     background-size: contain;
     background-repeat: no-repeat;
