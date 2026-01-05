@@ -168,7 +168,7 @@ export default function Index() {
                 />
                 <div className="flex justify-center mt-4">
                   <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
-                    <Icon name="Play" size={18} className="mr-2" />
+                    <Icon name="Play" size={24} className="mr-2" />
                     {content.btn_video?.value || 'Смотреть видео'}
                   </Button>
                 </div>
@@ -186,7 +186,7 @@ export default function Index() {
                 <div className="flex justify-center mt-4">
                   <Link to="/videos">
                     <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 rounded-full px-6">
-                      <Icon name="PlayCircle" size={18} className="mr-2" />
+                      <Icon name="PlayCircle" size={24} className="mr-2" />
                       Смотреть все видео
                     </Button>
                   </Link>
