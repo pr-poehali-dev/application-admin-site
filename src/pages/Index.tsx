@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import VideoPlayer from '@/components/VideoPlayer';
+import { Link } from 'react-router-dom';
 
 export default function Index() {
   const [formData, setFormData] = useState({
@@ -59,7 +60,7 @@ export default function Index() {
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex gap-8 items-center flex-1">
             <a href="#catalog" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_catalog?.value || 'Каталог'}</a>
-            <a href="#video" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_video?.value || 'Видео'}</a>
+            <Link to="/videos" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_video?.value || 'Видео'}</Link>
             <a href="#contacts" className="text-foreground hover:text-primary transition-colors text-sm">{content.nav_contacts?.value || 'Контакты'}</a>
           </div>
           <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
