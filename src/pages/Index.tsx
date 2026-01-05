@@ -138,9 +138,9 @@ export default function Index() {
             </div>
           </Card>
         </div>
-      </section>
+      </section>}
 
-      <section className="py-16 px-6">
+      {isSectionVisible('about_section') && <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={getStyleForElement('section_titles')}>
