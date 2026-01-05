@@ -228,18 +228,18 @@ export default function Index() {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">
               {oils.slice(0, 6).map((oil) => (
-                <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-2xl space-y-5">
-                  <div className="flex flex-col items-center gap-3">
-                    <span className="text-5xl">{oil.emoji}</span>
+                <div key={oil.id} className="sticker-pin bg-white/95 p-4 rounded-xl space-y-3">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-4xl">{oil.emoji}</span>
                     <div className="text-center">
-                      <h3 className="text-lg font-bold text-black">{oil.name}</h3>
-                      <p className="text-sm text-black/70 mt-1">{oil.description}</p>
+                      <h3 className="text-base font-bold text-black">{oil.name}</h3>
+                      <p className="text-xs text-black/70 mt-0.5">{oil.description}</p>
                     </div>
                   </div>
-                  <div className="bg-black/10 p-3 rounded-lg">
+                  <div className="bg-black/10 p-2 rounded-lg">
                     <audio 
                       controls 
-                      className="w-full"
+                      className="w-full h-8"
                       style={{ filter: 'invert(0.2) sepia(0.1)' }}
                     >
                       <source src={oil.audio_url} type="audio/mpeg" />

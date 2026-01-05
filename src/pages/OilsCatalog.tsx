@@ -130,24 +130,24 @@ export default function OilsCatalog() {
               <div className="flex-1">
                 <div className="grid md:grid-cols-2 gap-8">
                   {filteredOils.map((oil) => (
-                    <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-2xl space-y-4">
-                      <div className="flex items-center gap-4">
-                        <span className="text-5xl">{oil.emoji}</span>
+                    <div key={oil.id} className="sticker-pin bg-white/95 p-4 rounded-xl space-y-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-4xl">{oil.emoji}</span>
                         <div className="flex-1">
-                          <h3 className="text-lg font-bold text-black">{oil.name}</h3>
-                          <p className="text-sm text-black/70">{oil.description}</p>
+                          <h3 className="text-base font-bold text-black">{oil.name}</h3>
+                          <p className="text-xs text-black/70">{oil.description}</p>
                         </div>
                       </div>
-                      <div className="bg-black/10 p-3 rounded-lg">
+                      <div className="bg-black/10 p-2 rounded-lg">
                         <audio 
                           controls 
-                          className="w-full"
+                          className="w-full h-8"
                           style={{ filter: 'invert(0.2) sepia(0.1)' }}
                         >
                           <source src={oil.audio_url} type="audio/mpeg" />
                           Ваш браузер не поддерживает аудио элемент.
                         </audio>
-                        <p className="text-xs text-black/60 text-center mt-2">
+                        <p className="text-xs text-black/60 text-center mt-1">
                           Звук отжима
                         </p>
                       </div>
