@@ -164,7 +164,7 @@ export default function Index() {
               <div className="relative">
                 <VideoPlayer 
                   url={content.video_main?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
-                  className="sticker-pin aspect-video rounded-xl"
+                  className="aspect-video rounded-xl"
                 />
                 <div className="flex justify-center mt-4">
                   <Button className="bg-primary hover:bg-primary/90 text-black font-medium rounded-full px-6">
@@ -179,7 +179,7 @@ export default function Index() {
                     <VideoPlayer 
                       key={idx}
                       url={content[key]?.value || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
-                      className="sticker-pin aspect-video rounded-lg"
+                      className="aspect-video rounded-lg"
                     />
                   ))}
                 </div>
