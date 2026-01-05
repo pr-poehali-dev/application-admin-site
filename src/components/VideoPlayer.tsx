@@ -27,8 +27,8 @@ export default function VideoPlayer({ url, thumbnail, className = '' }: VideoPla
           </div>
         )}
         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-          <div className="bg-white/90 rounded-full p-4 group-hover:scale-110 transition-transform">
-            <Icon name="PlayCircle" size={48} className="text-black" />
+          <div className="bg-white/90 rounded-full p-6 group-hover:scale-110 transition-transform">
+            <Icon name="Play" size={96} className="text-black" />
           </div>
         </div>
       </div>
