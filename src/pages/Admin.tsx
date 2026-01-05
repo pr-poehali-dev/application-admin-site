@@ -13,9 +13,20 @@ interface ContentItem {
   section: string;
 }
 
+interface Application {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  status: string;
+  created_at: string;
+}
+
 export default function Admin() {
   const navigate = useNavigate();
   const [content, setContent] = useState<Record<string, ContentItem>>({});
+  const [applications, setApplications] = useState<Application[]>([]);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [loading, setLoading] = useState(true);
@@ -28,6 +39,7 @@ export default function Admin() {
     }
 
     fetchContent();
+    fetchApplications();
   }, [navigate]);
 
   const fetchContent = async () => {
@@ -39,6 +51,36 @@ export default function Admin() {
       console.error('Ошибка загрузки контента:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchApplications = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/387ebd4f-bd34-4c43-af39-7e58ad12cc46');
+      const data = await response.json();
+      setApplications(data);
+    } catch (error) {
+      console.error('Ошибка загрузки заявок:', error);
+    }
+  };
+
+  const updateApplicationStatus = async (id: number, status: string) => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/387ebd4f-bd34-4c43-af39-7e58ad12cc46', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, status }),
+      });
+
+      if (response.ok) {
+        setApplications(applications.map(app => 
+          app.id === id ? { ...app, status } : app
+        ));
+      }
+    } catch (error) {
+      console.error('Ошибка обновления статуса:', error);
     }
   };
 
@@ -120,12 +162,76 @@ export default function Admin() {
           </div>
         </div>
 
-        <Tabs defaultValue="hero" className="space-y-6">
+        <Tabs defaultValue="applications" className="space-y-6">
           <TabsList className="bg-black/40 border border-white/10">
+            <TabsTrigger value="applications">
+              Заявки
+              {applications.filter(a => a.status === 'new').length > 0 && (
+                <span className="ml-2 bg-primary text-black rounded-full px-2 py-0.5 text-xs">
+                  {applications.filter(a => a.status === 'new').length}
+                </span>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="hero">Главная</TabsTrigger>
             <TabsTrigger value="about">О бренде</TabsTrigger>
             <TabsTrigger value="features">Особенности</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="applications">
+            <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-[2rem]">
+              <h2 className="text-2xl font-bold mb-6">Заявки с сайта</h2>
+              {applications.length === 0 ? (
+                <p className="text-foreground/70 text-center py-8">Заявок пока нет</p>
+              ) : (
+                <div className="space-y-4">
+                  {applications.map((app) => (
+                    <Card key={app.id} className="bg-black/30 border-white/5 p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-semibold">{app.name}</h3>
+                            <select
+                              value={app.status}
+                              onChange={(e) => updateApplicationStatus(app.id, e.target.value)}
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                app.status === 'new' 
+                                  ? 'bg-primary text-black' 
+                                  : app.status === 'in_progress'
+                                  ? 'bg-blue-500 text-white'
+                                  : 'bg-green-500 text-white'
+                              }`}
+                            >
+                              <option value="new">Новая</option>
+                              <option value="in_progress">В работе</option>
+                              <option value="completed">Завершена</option>
+                            </select>
+                          </div>
+                          <div className="space-y-1 text-sm text-foreground/70">
+                            <p className="flex items-center gap-2">
+                              <Icon name="Phone" size={14} />
+                              {app.phone}
+                            </p>
+                            {app.email && (
+                              <p className="flex items-center gap-2">
+                                <Icon name="Mail" size={14} />
+                                {app.email}
+                              </p>
+                            )}
+                            {app.message && (
+                              <p className="mt-2 text-foreground">{app.message}</p>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-xs text-foreground/50">
+                          {new Date(app.created_at).toLocaleString('ru-RU')}
+                        </p>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
 
           {Object.entries(contentBySection).map(([section, items]) => (
             <TabsContent key={section} value={section}>

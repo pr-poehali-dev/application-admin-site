@@ -30,11 +30,27 @@ export default function Index() {
       .catch(err => console.error('Ошибка загрузки контента:', err));
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Заявка отправлена:', formData);
-    alert('Спасибо за заявку! Мы скоро свяжемся с вами.');
-    setFormData({ name: '', phone: '', email: '', message: '' });
+    try {
+      const response = await fetch('https://functions.poehali.dev/387ebd4f-bd34-4c43-af39-7e58ad12cc46', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert('Спасибо за заявку! Мы скоро свяжемся с вами.');
+        setFormData({ name: '', phone: '', email: '', message: '' });
+      } else {
+        alert('Ошибка отправки заявки. Попробуйте позже.');
+      }
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+      alert('Ошибка отправки заявки. Попробуйте позже.');
+    }
   };
 
   return (
