@@ -163,7 +163,7 @@ export default function Index() {
                 { key: 'feature_3', fallback: 'Семейные традиции' },
                 { key: 'feature_4', fallback: 'Без примесей' }
               ].map((item, idx) => (
-                <div key={idx} className="sticker-pin bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square">
+                <div key={idx} className="bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square">
                   <span className="text-lg font-bold text-black text-center leading-tight">
                     {content[item.key]?.value || item.fallback}
                   </span>
@@ -232,7 +232,7 @@ export default function Index() {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {oils.slice(0, 6).map((oil) => (
-                <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4 py-[58px]">
+                <div key={oil.id} className="bg-white/95 p-6 rounded-xl space-y-4 py-[58px]">
                   <div className="flex flex-col items-center gap-3">
                     <span className="text-5xl">{oil.emoji}</span>
                     <div className="text-center">
@@ -282,7 +282,7 @@ export default function Index() {
                 { step: 3, key: 'order_step_3' }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
-                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
+                  <div className="bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
                     <span className="text-4xl font-bold text-black">{item.step}</span>
                     <p className="text-sm text-black text-center font-medium">
                       {content[item.key]?.value || 'Шаг ' + item.step}
