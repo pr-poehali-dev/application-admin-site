@@ -121,25 +121,44 @@ export default function Index() {
       </section>
 
       <section className="py-16 px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="mb-8">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              {content.history_title?.value}
-            </h2>
-            <p className="text-lg text-[#d4af7a]/70">
-              {content.history_subtitle?.value}
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="border border-[#d4af7a]/20 p-8 rounded-xl">
-              <p className="text-white/90 leading-relaxed">
-                {content.history_text_1?.value}
-              </p>
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-5xl md:text-6xl font-bold mb-4">
+                  {content.history_title?.value}
+                </h2>
+                <p className="text-xl text-[#d4af7a]/70 mb-8">
+                  {content.history_subtitle?.value}
+                </p>
+              </div>
+              
+              <div className="border border-[#d4af7a]/20 rounded-xl p-8 space-y-6">
+                <div className="space-y-4">
+                  <p className="text-white/90 leading-relaxed">
+                    {content.history_text_1?.value}
+                  </p>
+                  <p className="text-white/90 leading-relaxed mt-4">
+                    {content.history_text_2?.value}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="border border-[#d4af7a]/20 p-8 rounded-xl">
-              <p className="text-white/90 leading-relaxed">
-                {content.history_text_2?.value}
-              </p>
+
+            <div className="relative">
+              <div className="sticker-pin bg-white rounded-2xl shadow-2xl p-0 aspect-[3/4] overflow-hidden">
+                {content.history_image?.value ? (
+                  <img 
+                    src={content.history_image.value} 
+                    alt="История бренда" 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#d4af7a]/20 to-[#d4af7a]/5">
+                    <Icon name="Image" size={64} className="text-[#d4af7a]/30" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
