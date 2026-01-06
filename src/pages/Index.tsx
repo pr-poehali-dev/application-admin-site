@@ -132,12 +132,12 @@ export default function Index() {
               {content.history_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="sticker-pin bg-white/95 p-6 rounded-xl">
+              <div className="bg-white/95 p-6 rounded-xl">
                 <p className="text-sm text-black leading-relaxed">
                   {content.history_text_1?.value}
                 </p>
               </div>
-              <div className="sticker-pin bg-white/95 p-6 rounded-xl">
+              <div className="bg-white/95 p-6 rounded-xl">
                 <p className="text-sm text-black leading-relaxed">
                   {content.history_text_2?.value}
                 </p>
