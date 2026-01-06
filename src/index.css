@@ -55,23 +55,10 @@
   body {
     @apply text-foreground;
     font-family: "Open Sans", sans-serif;
-    background-color: #2a2a2a;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        rgba(51, 51, 51, 0.15) 0px,
-        transparent 1px,
-        transparent 40px,
-        rgba(51, 51, 51, 0.15) 41px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        rgba(51, 51, 51, 0.15) 0px,
-        transparent 1px,
-        transparent 40px,
-        rgba(51, 51, 51, 0.15) 41px
-      );
+    background-image: url("https://cdn.poehali.dev/files/chalk-background.png.png");
+    background-size: cover;
     background-attachment: fixed;
+    background-position: center;
   }
 
   h1,
