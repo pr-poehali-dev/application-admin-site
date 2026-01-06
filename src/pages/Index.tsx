@@ -68,12 +68,16 @@ export default function Index() {
   };
 
   const pinSize = designSettings['pin_icon_size']?.position_x || 128;
+  const pinTop = designSettings['pin_icon_size']?.position_y || 12;
   const pinOffsetX = designSettings['pin_icon_size']?.margin_left || -30;
+  const contentPaddingTop = designSettings['pin_icon_size']?.padding_top || 5;
 
   return (
     <div className="min-h-screen" style={{
       '--pin-size': `${pinSize}px`,
-      '--pin-offset-x': `${pinOffsetX}px`
+      '--pin-top': `${pinTop}px`,
+      '--pin-offset-x': `${pinOffsetX}px`,
+      '--content-padding-top': `${contentPaddingTop}px`
     } as React.CSSProperties}>
       <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -226,20 +230,20 @@ export default function Index() {
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {oils.slice(0, 6).map((oil) => (
-                <div key={oil.id} className="sticker-pin bg-white/95 p-3 rounded-xl space-y-2">
-                  <div className="flex flex-col items-center gap-2">
-                    <span className="text-4xl">{oil.emoji}</span>
+                <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
+                  <div className="flex flex-col items-center gap-3">
+                    <span className="text-5xl">{oil.emoji}</span>
                     <div className="text-center">
-                      <h3 className="text-base font-bold text-black">{oil.name}</h3>
-                      <p className="text-xs text-black/70 mt-0.5">{oil.description}</p>
+                      <h3 className="text-lg font-bold text-black">{oil.name}</h3>
+                      <p className="text-xs text-black/70 mt-1">{oil.description}</p>
                     </div>
                   </div>
-                  <div className="bg-black/10 p-2 rounded-lg">
+                  <div className="bg-black/10 p-3 rounded-lg">
                     <audio 
                       controls 
-                      className="w-full h-8"
+                      className="w-full"
                       style={{ filter: 'invert(0.2) sepia(0.1)' }}
                     >
                       <source src={oil.audio_url} type="audio/mpeg" />
@@ -278,7 +282,7 @@ export default function Index() {
                 { step: 3, key: 'order_step_3' }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
-                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3 my-1 py-[13px]">
+                  <div className="sticker-pin bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
                     <span className="text-4xl font-bold text-black">{item.step}</span>
                     <p className="text-sm text-black text-center font-medium">
                       {content[item.key]?.value || 'Шаг ' + item.step}
