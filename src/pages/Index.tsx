@@ -79,14 +79,14 @@ export default function Index() {
       '--pin-offset-x': `${pinOffsetX}px`,
       '--content-padding-top': `${contentPaddingTop}px`
     } as React.CSSProperties}>
-      <nav className="fixed top-0 w-full bg-[#1a1a1a]/90 backdrop-blur-md border-b border-[#d4af7a]/20 z-50">
+      <nav className="fixed top-0 w-full bg-[#1a1a1a]/90 backdrop-blur-md border-b border-[#CDB748]/20 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex gap-8 items-center flex-1">
-            <a href="#catalog" className="text-[#d4af7a] hover:text-[#d4af7a]/70 transition-colors text-sm">{content.nav_catalog?.value || 'Каталог'}</a>
-            <Link to="/videos" className="text-[#d4af7a] hover:text-[#d4af7a]/70 transition-colors text-sm">{content.nav_video?.value || 'Видео'}</Link>
-            <a href="#contacts" className="text-[#d4af7a] hover:text-[#d4af7a]/70 transition-colors text-sm">{content.nav_contacts?.value || 'Контакты'}</a>
+            <a href="#catalog" className="text-[#E7E7E7] hover:text-[#E7E7E7]/70 transition-colors text-sm">{content.nav_catalog?.value || 'Каталог'}</a>
+            <Link to="/videos" className="text-[#E7E7E7] hover:text-[#E7E7E7]/70 transition-colors text-sm">{content.nav_video?.value || 'Видео'}</Link>
+            <a href="#contacts" className="text-[#E7E7E7] hover:text-[#E7E7E7]/70 transition-colors text-sm">{content.nav_contacts?.value || 'Контакты'}</a>
           </div>
-          <Button className="bg-[#d4af7a] hover:bg-[#d4af7a]/90 text-black font-medium rounded-full px-6">
+          <Button className="bg-[#CDB748] hover:bg-[#CDB748]/90 text-[#000000] font-medium rounded-full px-6">
             {content.btn_submit?.value || 'Оставить заявку'}
           </Button>
         </div>
@@ -99,7 +99,7 @@ export default function Index() {
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
                 {content.hero_title?.value}
               </h1>
-              <p className="text-lg text-[#d4af7a]/70 leading-relaxed">
+              <p className="text-lg text-[#E7E7E7]/80 leading-relaxed">
                 {content.hero_description?.value}
               </p>
             </div>
@@ -128,17 +128,17 @@ export default function Index() {
                 <h2 className="text-5xl md:text-6xl font-bold mb-4">
                   {content.history_title?.value}
                 </h2>
-                <p className="text-xl text-[#d4af7a]/70 mb-8">
+                <p className="text-xl text-[#E7E7E7]/80 mb-8">
                   {content.history_subtitle?.value}
                 </p>
               </div>
               
-              <div className="border border-[#d4af7a]/20 rounded-xl p-8 space-y-6">
+              <div className="border border-[#CDB748]/20 rounded-xl p-8 space-y-6">
                 <div className="space-y-4">
-                  <p className="text-white/90 leading-relaxed">
+                  <p className="text-[#E7E7E7] leading-relaxed">
                     {content.history_text_1?.value}
                   </p>
-                  <p className="text-white/90 leading-relaxed mt-4">
+                  <p className="text-[#E7E7E7] leading-relaxed mt-4">
                     {content.history_text_2?.value}
                   </p>
                 </div>
@@ -154,8 +154,8 @@ export default function Index() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#d4af7a]/20 to-[#d4af7a]/5">
-                    <Icon name="Image" size={64} className="text-[#d4af7a]/30" />
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#CDB748]/20 to-[#CDB748]/5">
+                    <Icon name="Image" size={64} className="text-[#CDB748]/30" />
                   </div>
                 )}
               </div>
@@ -170,13 +170,13 @@ export default function Index() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               {content.features_title?.value}
             </h2>
-            <p className="text-lg text-[#d4af7a]/70">
+            <p className="text-lg text-[#E7E7E7]/80">
               {content.features_subtitle?.value}
             </p>
           </div>
           <div className="text-center">
             <Link to="/oils">
-              <Button className="bg-[#d4af7a] hover:bg-[#d4af7a]/90 text-black font-medium rounded-full px-8 py-6 text-lg">
+              <Button className="bg-[#CDB748] hover:bg-[#CDB748]/90 text-[#000000] font-medium rounded-full px-8 py-6 text-lg">
                 <Icon name="Book" size={24} className="mr-2" />
                 Посмотреть каталог масел
               </Button>
@@ -195,16 +195,16 @@ export default function Index() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               {content.contact_title?.value || 'Оставить заявку'}
             </h2>
-            <p className="text-lg text-[#d4af7a]/70">
+            <p className="text-lg text-[#E7E7E7]/80">
               {content.contact_subtitle?.value}
             </p>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-6 border border-[#d4af7a]/20 p-8 rounded-xl">
+          <form onSubmit={handleSubmit} className="space-y-6 border border-[#CDB748]/20 p-8 rounded-xl">
             <Input
               placeholder="Имя"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="bg-black/30 border-[#d4af7a]/20 text-white placeholder:text-white/40 rounded-xl h-14"
+              className="bg-black/30 border-[#CDB748]/20 text-[#E7E7E7] placeholder:text-[#E7E7E7]/40 rounded-xl h-14"
               required
             />
             <Input
@@ -212,7 +212,7 @@ export default function Index() {
               placeholder="Телефон"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="bg-black/30 border-[#d4af7a]/20 text-white placeholder:text-white/40 rounded-xl h-14"
+              className="bg-black/30 border-[#CDB748]/20 text-[#E7E7E7] placeholder:text-[#E7E7E7]/40 rounded-xl h-14"
               required
             />
             <Input
@@ -220,16 +220,16 @@ export default function Index() {
               placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-black/30 border-[#d4af7a]/20 text-white placeholder:text-white/40 rounded-xl h-14"
+              className="bg-black/30 border-[#CDB748]/20 text-[#E7E7E7] placeholder:text-[#E7E7E7]/40 rounded-xl h-14"
               required
             />
             <Textarea
               placeholder="Сообщение"
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="bg-black/30 border-[#d4af7a]/20 text-white placeholder:text-white/40 rounded-xl min-h-32"
+              className="bg-black/30 border-[#CDB748]/20 text-[#E7E7E7] placeholder:text-[#E7E7E7]/40 rounded-xl min-h-32"
             />
-            <Button type="submit" className="w-full bg-[#d4af7a] hover:bg-[#d4af7a]/90 text-black font-medium rounded-full py-6 text-lg">
+            <Button type="submit" className="w-full bg-[#CDB748] hover:bg-[#CDB748]/90 text-[#000000] font-medium rounded-full py-6 text-lg">
               {content.btn_submit?.value || 'Отправить заявку'}
             </Button>
           </form>

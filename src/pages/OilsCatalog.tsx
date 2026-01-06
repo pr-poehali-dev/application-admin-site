@@ -80,12 +80,12 @@ export default function OilsCatalog() {
         }}
       />
 
-      <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md border-b border-white/10 z-50">
+      <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md border-b border-[#CDB748]/20 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-[#d4af7a] hover:text-[#d4af7a]/80"
+            className="flex items-center gap-2 text-[#E7E7E7] hover:text-[#E7E7E7]/80"
           >
             <Icon name="ArrowLeft" size={20} />
             На главную
@@ -100,8 +100,8 @@ export default function OilsCatalog() {
                   setCurrentOilIndex(0);
                 }}
                 className={selectedCategory === cat.slug 
-                  ? 'bg-[#d4af7a] text-black hover:bg-[#d4af7a]/90' 
-                  : 'border-[#d4af7a]/30 text-[#d4af7a] hover:bg-[#d4af7a]/10'}
+                  ? 'bg-[#CDB748] text-[#000000] hover:bg-[#CDB748]/90' 
+                  : 'border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10'}
                 size="sm"
               >
                 {cat.name}
@@ -116,19 +116,19 @@ export default function OilsCatalog() {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div className="space-y-8">
               <div>
-                <h1 className="text-5xl md:text-6xl font-bold text-[#d4af7a] mb-4 leading-tight">
+                <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
                   {currentOil.name}
                 </h1>
-                <p className="text-xl text-[#d4af7a]/70">
+                <p className="text-xl text-[#E7E7E7]/80">
                   сыродавленное масло
                 </p>
               </div>
 
-              <div className="border border-[#d4af7a]/20 rounded-xl p-8 space-y-6">
+              <div className="border border-[#CDB748]/20 rounded-xl p-8 space-y-6">
                 {(currentOil.benefits || defaultBenefits).map((benefit, idx) => (
                   <div key={idx} className="flex items-start gap-4">
-                    <div className="w-3 h-3 rounded-full bg-[#d4af7a] mt-2 flex-shrink-0" />
-                    <p className="text-white/90 leading-relaxed">
+                    <div className="w-3 h-3 rounded-full bg-[#CDB748] mt-2 flex-shrink-0" />
+                    <p className="text-[#E7E7E7] leading-relaxed">
                       {benefit}
                     </p>
                   </div>
@@ -140,12 +140,12 @@ export default function OilsCatalog() {
                   onClick={goToPrev}
                   variant="outline"
                   size="icon"
-                  className="border-[#d4af7a]/30 text-[#d4af7a] hover:bg-[#d4af7a]/10 h-12 w-12"
+                  className="border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10 h-12 w-12"
                 >
                   <Icon name="ChevronLeft" size={24} />
                 </Button>
                 <div className="flex-1 text-center">
-                  <p className="text-[#d4af7a]/70 text-sm">
+                  <p className="text-[#E7E7E7]/70 text-sm">
                     {currentOilIndex + 1} из {filteredOils.length}
                   </p>
                 </div>
@@ -153,7 +153,7 @@ export default function OilsCatalog() {
                   onClick={goToNext}
                   variant="outline"
                   size="icon"
-                  className="border-[#d4af7a]/30 text-[#d4af7a] hover:bg-[#d4af7a]/10 h-12 w-12"
+                  className="border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10 h-12 w-12"
                 >
                   <Icon name="ChevronRight" size={24} />
                 </Button>
