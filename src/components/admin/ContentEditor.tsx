@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 
 interface ContentItem {
@@ -19,6 +20,7 @@ interface ContentEditorProps {
 export default function ContentEditor({ items, section, onSave }: ContentEditorProps) {
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const handleEdit = (key: string, currentValue: string) => {
     setEditingKey(key);
@@ -28,6 +30,37 @@ export default function ContentEditor({ items, section, onSave }: ContentEditorP
   const handleSave = async (key: string) => {
     await onSave(key, editValue);
     setEditingKey(null);
+  };
+
+  const handleImageUpload = async (key: string, file: File) => {
+    setUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = async () => {
+        const base64 = reader.result as string;
+        const base64Data = base64.split(',')[1];
+
+        const response = await fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'upload_image',
+            image_data: base64Data,
+            filename: file.name
+          })
+        });
+
+        const data = await response.json();
+        if (data.url) {
+          await onSave(key, data.url);
+        }
+      };
+    } catch (error) {
+      console.error('Ошибка загрузки изображения:', error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -70,14 +103,31 @@ export default function ContentEditor({ items, section, onSave }: ContentEditorP
               )}
             </div>
             {editingKey === key ? (
-              <Textarea
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="bg-black/30 border-white/10 text-foreground min-h-24"
-              />
+              key.includes('image') ? (
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImageUpload(key, file);
+                  }}
+                  className="bg-black/30 border-white/10 text-foreground"
+                  disabled={uploading}
+                />
+              ) : (
+                <Textarea
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  className="bg-black/30 border-white/10 text-foreground min-h-24"
+                />
+              )
             ) : (
               <div className="bg-black/20 p-4 rounded-xl border border-white/5">
-                <p className="text-foreground">{value}</p>
+                {key.includes('image') && value ? (
+                  <img src={value} alt={key} className="max-w-xs rounded-lg" />
+                ) : (
+                  <p className="text-foreground">{value}</p>
+                )}
               </div>
             )}
           </div>

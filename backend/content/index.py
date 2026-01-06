@@ -1,5 +1,8 @@
 import json
 import os
+import base64
+import boto3
+from datetime import datetime
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -115,6 +118,49 @@ def handler(event: dict, context):
         
         elif method == 'POST':
             body = json.loads(event.get('body', '{}'))
+            action = body.get('action')
+            
+            if action == 'upload_image':
+                image_data = body.get('image_data')
+                filename = body.get('filename', 'image.jpg')
+                
+                if not image_data:
+                    return {
+                        'statusCode': 400,
+                        'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                        'body': json.dumps({'error': 'Нет данных изображения'})
+                    }
+                
+                s3 = boto3.client('s3',
+                    endpoint_url='https://bucket.poehali.dev',
+                    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+                    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+                )
+                
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                key = f'hero/{timestamp}_{filename}'
+                
+                image_bytes = base64.b64decode(image_data)
+                content_type = 'image/jpeg'
+                if filename.lower().endswith('.png'):
+                    content_type = 'image/png'
+                elif filename.lower().endswith('.webp'):
+                    content_type = 'image/webp'
+                
+                s3.put_object(
+                    Bucket='files',
+                    Key=key,
+                    Body=image_bytes,
+                    ContentType=content_type
+                )
+                
+                cdn_url = f"https://cdn.poehali.dev/projects/{os.environ['AWS_ACCESS_KEY_ID']}/bucket/{key}"
+                
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'url': cdn_url})
+                }
             
             if path_type == 'categories':
                 name = body.get('name')

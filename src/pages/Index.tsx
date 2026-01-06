@@ -113,8 +113,16 @@ export default function Index() {
                 </div>
               </div>
               <div className="relative flex justify-center">
-                <div className="sticker-pin bg-white rounded-2xl shadow-xl p-8 aspect-[4/3] w-full max-w-sm flex items-center justify-center">
-                  <div className="text-7xl">🥜</div>
+                <div className="sticker-pin bg-white rounded-2xl shadow-xl p-8 aspect-[4/3] w-full max-w-sm flex items-center justify-center overflow-hidden">
+                  {content.hero_image?.value ? (
+                    <img 
+                      src={content.hero_image.value} 
+                      alt="Яворский Дворъ Масел" 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="text-7xl">🥜</div>
+                  )}
                 </div>
               </div>
             </div>
