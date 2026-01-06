@@ -240,13 +240,21 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen p-6">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-7xl">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold mb-2">Админпанель</h1>
             <p className="text-foreground/70">Редактирование контента сайта</p>
           </div>
           <div className="flex gap-4">
+            <Button
+              variant="outline"
+              onClick={() => window.open('/', '_blank')}
+              className="flex items-center gap-2"
+            >
+              <Icon name="ExternalLink" size={20} />
+              Предпросмотр
+            </Button>
             <Button
               variant="outline"
               onClick={() => navigate('/')}
