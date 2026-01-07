@@ -97,10 +97,10 @@ export default function Index() {
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem] relative overflow-hidden">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                <h1 className="text-5xl md:text-6xl font-bold leading-tight">
                   {content.hero_title?.value}
                 </h1>
-                <p className="text-base text-foreground/80 leading-relaxed">
+                <p className="text-xl text-foreground/90 leading-relaxed">
                   {content.hero_description?.value}
                 </p>
                 <div className="flex gap-4">
@@ -133,20 +133,20 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               {content.history_title?.value}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-xl text-foreground/80 mb-10">
               {content.history_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white/95 p-6 rounded-xl">
-                <p className="text-sm text-black leading-relaxed">
+              <div className="bg-white/95 p-8 rounded-xl">
+                <p className="text-lg text-black leading-relaxed">
                   {content.history_text_1?.value}
                 </p>
               </div>
-              <div className="bg-white/95 p-6 rounded-xl">
-                <p className="text-sm text-black leading-relaxed">
+              <div className="bg-white/95 p-8 rounded-xl">
+                <p className="text-lg text-black leading-relaxed">
                   {content.history_text_2?.value}
                 </p>
               </div>
@@ -158,10 +158,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               {content.features_title?.value}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-xl text-foreground/80 mb-10">
               {content.features_subtitle?.value}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -172,7 +172,7 @@ export default function Index() {
                 { key: 'feature_4', fallback: 'Без примесей' }
               ].map((item, idx) => (
                 <div key={idx} className="bg-white/95 p-6 rounded-xl flex items-center justify-center aspect-square">
-                  <span className="text-lg font-bold text-black text-center leading-tight">
+                  <span className="text-xl font-bold text-black text-center leading-tight">
                     {content[item.key]?.value || item.fallback}
                   </span>
                 </div>
@@ -185,10 +185,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               {content.video_section_title?.value || 'Как мы создаем наше масло?'}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-xl text-foreground/80 mb-10">
               {content.video_section_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-2 gap-6">
@@ -231,10 +231,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               {content.audio_section_title?.value || 'Послушать масло'}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-xl text-foreground/80 mb-10">
               {content.audio_section_subtitle?.value || 'Почувствуйте звук настоящего качества'}
             </p>
             
@@ -244,8 +244,8 @@ export default function Index() {
                   <div className="flex flex-col items-center gap-3">
                     <span className="text-5xl">{oil.emoji}</span>
                     <div className="text-center">
-                      <h3 className="text-lg font-bold text-black">{oil.name}</h3>
-                      <p className="text-xs text-black/70 mt-1">{oil.description}</p>
+                      <h3 className="text-xl font-bold text-black">{oil.name}</h3>
+                      <p className="text-base text-black/70 mt-1">{oil.description}</p>
                     </div>
                   </div>
                   <div className="bg-black/10 p-3 rounded-lg">
@@ -277,10 +277,10 @@ export default function Index() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               {content.order_title?.value || 'Как заказать?'}
             </h2>
-            <p className="text-sm text-foreground/70 mb-8">
+            <p className="text-xl text-foreground/80 mb-10">
               {content.order_subtitle?.value}
             </p>
             <div className="grid md:grid-cols-3 gap-6">
@@ -291,8 +291,8 @@ export default function Index() {
               ].map((item, idx) => (
                 <div key={idx} className="relative flex items-center gap-4">
                   <div className="bg-white/95 p-8 rounded-xl flex-1 aspect-[3/2] flex flex-col items-center justify-center gap-3">
-                    <span className="text-4xl font-bold text-black">{item.step}</span>
-                    <p className="text-sm text-black text-center font-medium">
+                    <span className="text-5xl font-bold text-black">{item.step}</span>
+                    <p className="text-lg text-black text-center font-medium">
                       {content[item.key]?.value || 'Шаг ' + item.step}
                     </p>
                   </div>
@@ -310,10 +310,10 @@ export default function Index() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-[2rem]">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 {content.contact_title?.value || 'Оставить заявку'}
               </h2>
-              <p className="text-sm text-foreground/70 mb-6">
+              <p className="text-xl text-foreground/80 mb-8">
                 {content.contact_subtitle?.value}
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
