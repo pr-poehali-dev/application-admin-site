@@ -25,6 +25,9 @@ def handler(event: dict, context):
                 body_str = '{}'
             body = json.loads(body_str)
             email = body.get('email')
+            google_auth = body.get('googleAuth', False)
+            uid = body.get('uid')
+            display_name = body.get('displayName')
             
             if not email:
                 return {
@@ -45,18 +48,28 @@ def handler(event: dict, context):
             )
             admin = cur.fetchone()
             
+            if not admin:
+                if google_auth:
+                    cur.execute(
+                        f"INSERT INTO {os.environ['MAIN_DB_SCHEMA']}.admins (email, google_uid, display_name) VALUES (%s, %s, %s) RETURNING *",
+                        (email, uid, display_name)
+                    )
+                    admin = cur.fetchone()
+                    conn.commit()
+                else:
+                    cur.close()
+                    conn.close()
+                    return {
+                        'statusCode': 401,
+                        'headers': {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        'body': json.dumps({'error': 'Email не найден'})
+                    }
+            
             cur.close()
             conn.close()
-            
-            if not admin:
-                return {
-                    'statusCode': 401,
-                    'headers': {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    'body': json.dumps({'error': 'Email не найден'})
-                }
             
             return {
                 'statusCode': 200,
