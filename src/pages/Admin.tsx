@@ -5,7 +5,6 @@ import Icon from '@/components/ui/icon';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ApplicationsList from '@/components/admin/ApplicationsList';
 import ContentEditor from '@/components/admin/ContentEditor';
-import DesignSettings from '@/components/admin/DesignSettings';
 import OilsManager from '@/components/admin/OilsManager';
 
 interface ContentItem {
@@ -24,32 +23,12 @@ interface Application {
   created_at: string;
 }
 
-interface DesignSettingsType {
-  position_x: number;
-  position_y: number;
-  width: number | null;
-  height: number | null;
-  rotation: number;
-  scale: number;
-  z_index: number;
-  is_visible: boolean;
-  margin_left: number;
-  margin_right: number;
-  margin_top: number;
-  margin_bottom: number;
-  padding_left: number;
-  padding_right: number;
-  padding_top: number;
-  padding_bottom: number;
-  font_size: number | null;
-  line_height: number | null;
-}
+
 
 export default function Admin() {
   const navigate = useNavigate();
   const [content, setContent] = useState<Record<string, ContentItem>>({});
   const [applications, setApplications] = useState<Application[]>([]);
-  const [designSettings, setDesignSettings] = useState<Record<string, DesignSettingsType>>({});
   const [categories, setCategories] = useState<Array<{id: number; name: string; slug: string}>>([]);
   const [oils, setOils] = useState<Array<{id: number; name: string; emoji: string; category_slug: string; description: string; audio_url: string}>>([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +42,6 @@ export default function Admin() {
 
     fetchContent();
     fetchApplications();
-    fetchDesignSettings();
     fetchOils();
     fetchCategories();
   }, [navigate]);
@@ -169,55 +147,6 @@ export default function Admin() {
     fetchCategories();
   };
 
-  const updateDesignSetting = async (elementKey: string, settings: Partial<DesignSettingsType>) => {
-    try {
-      const currentSettings = designSettings[elementKey] || {
-        position_x: 0,
-        position_y: 0,
-        width: null,
-        height: null,
-        rotation: 0,
-        scale: 1.0,
-        z_index: 1,
-        is_visible: true,
-        margin_left: 0,
-        margin_right: 0,
-        margin_top: 0,
-        margin_bottom: 0,
-        padding_left: 0,
-        padding_right: 0,
-        padding_top: 0,
-        padding_bottom: 0,
-        font_size: null,
-        line_height: null
-      };
-
-      const response = await fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          element_key: elementKey,
-          ...currentSettings,
-          ...settings
-        }),
-      });
-
-      if (response.ok) {
-        setDesignSettings({
-          ...designSettings,
-          [elementKey]: {
-            ...currentSettings,
-            ...settings
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Ошибка обновления настроек:', error);
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('admin');
     navigate('/login');
@@ -289,7 +218,6 @@ export default function Admin() {
             <TabsTrigger value="features">Особенности</TabsTrigger>
             <TabsTrigger value="video">Видео</TabsTrigger>
             <TabsTrigger value="oils">Каталог масел</TabsTrigger>
-            <TabsTrigger value="design">Дизайн</TabsTrigger>
           </TabsList>
 
           <TabsContent value="applications">
@@ -316,12 +244,6 @@ export default function Admin() {
               onRefresh={handleRefreshOils}
             />
           </TabsContent>
-
-          <TabsContent value="design">
-            <DesignSettings
-              designSettings={designSettings}
-              onUpdate={updateDesignSetting}
-            />
           </TabsContent>
         </Tabs>
       </div>
