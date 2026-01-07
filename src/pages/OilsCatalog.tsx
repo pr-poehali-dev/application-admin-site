@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,16 +17,14 @@ interface Oil {
   category_slug: string;
   description: string;
   audio_url: string;
-  image_url?: string;
-  benefits?: string[];
 }
 
 export default function OilsCatalog() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
   const [oils, setOils] = useState<Oil[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [currentOilIndex, setCurrentOilIndex] = useState(0);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [designSettings, setDesignSettings] = useState<Record<string, any>>({});
 
   useEffect(() => {
     fetch('https://functions.poehali.dev/ad9cff9d-6114-484b-910f-65b2c139b8a5?type=categories')
@@ -37,145 +36,138 @@ export default function OilsCatalog() {
       .then(res => res.json())
       .then(data => setOils(data))
       .catch(err => console.error('Ошибка загрузки масел:', err));
+
+    fetch('https://functions.poehali.dev/5ae7cafb-acc2-4d01-88c2-62eb67af1638')
+      .then(res => res.json())
+      .then(data => setDesignSettings(data))
+      .catch(err => console.error('Ошибка загрузки настроек дизайна:', err));
   }, []);
 
-  const filteredOils = selectedCategory 
-    ? oils.filter(oil => oil.category_slug === selectedCategory)
-    : oils;
-
-  const currentOil = filteredOils[currentOilIndex];
-
-  const goToNext = () => {
-    setCurrentOilIndex((prev) => (prev + 1) % filteredOils.length);
-  };
-
-  const goToPrev = () => {
-    setCurrentOilIndex((prev) => (prev - 1 + filteredOils.length) % filteredOils.length);
-  };
-
-  const defaultBenefits = [
-    'Мягкое антибактериальное и противогрибковое действие',
-    'Снижает уровень сахара в крови',
-    'Очистка организма от паразитов',
-    'Успокоение кожи при высыпаниях и воспалениях',
-    'Баланс гормональной системы',
-    'Поддержка иммунитета'
-  ];
-
-  if (!currentOil) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-foreground/70">Загрузка...</p>
-      </div>
+  const toggleCategory = (categorySlug: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categorySlug) 
+        ? prev.filter(c => c !== categorySlug)
+        : [...prev, categorySlug]
     );
-  }
+  };
+
+  const filteredOils = selectedCategories.length === 0 
+    ? oils 
+    : oils.filter(oil => selectedCategories.includes(oil.category_slug));
+
+  const pinSize = designSettings['pin_icon_size']?.position_x || 128;
+  const pinTop = designSettings['pin_icon_size']?.position_y || 12;
+  const pinOffsetX = designSettings['pin_icon_size']?.margin_left || -30;
+  const contentPaddingTop = designSettings['pin_icon_size']?.padding_top || 5;
 
   return (
-    <div className="min-h-screen bg-[#2a2a2a] relative overflow-hidden">
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gMTAwIDAgTCAwIDAgMCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+)',
-          backgroundSize: '100px 100px'
-        }}
-      />
-
-      <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md border-b border-[#CDB748]/20 z-50">
+    <div className="min-h-screen" style={{
+      '--pin-size': `${pinSize}px`,
+      '--pin-top': `${pinTop}px`,
+      '--pin-offset-x': `${pinOffsetX}px`,
+      '--content-padding-top': `${contentPaddingTop}px`
+    } as React.CSSProperties}>
+      <nav className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-border/30 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-[#E7E7E7] hover:text-[#E7E7E7]/80"
+            className="flex items-center gap-2"
           >
             <Icon name="ArrowLeft" size={20} />
             На главную
           </Button>
-          <div className="flex gap-2">
-            {categories.map(cat => (
-              <Button
-                key={cat.id}
-                variant={selectedCategory === cat.slug ? 'default' : 'outline'}
-                onClick={() => {
-                  setSelectedCategory(cat.slug === selectedCategory ? '' : cat.slug);
-                  setCurrentOilIndex(0);
-                }}
-                className={selectedCategory === cat.slug 
-                  ? 'bg-[#CDB748] text-[#000000] hover:bg-[#CDB748]/90' 
-                  : 'border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10'}
-                size="sm"
-              >
-                {cat.name}
-              </Button>
-            ))}
-          </div>
+          <h1 className="text-2xl font-bold">Каталог масел</h1>
+          <div className="w-32"></div>
         </div>
       </nav>
 
-      <div className="pt-24 pb-16 px-6 relative z-10">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div className="space-y-8">
-              <div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
-                  {currentOil.name}
-                </h1>
-                <p className="text-xl text-[#E7E7E7]/80">
-                  сыродавленное масло
-                </p>
-              </div>
-
-              <div className="border border-[#CDB748]/20 rounded-xl p-8 space-y-6">
-                {(currentOil.benefits || defaultBenefits).map((benefit, idx) => (
-                  <div key={idx} className="flex items-start gap-4">
-                    <div className="w-3 h-3 rounded-full bg-[#CDB748] mt-2 flex-shrink-0" />
-                    <p className="text-[#E7E7E7] leading-relaxed">
-                      {benefit}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-4">
-                <Button
-                  onClick={goToPrev}
-                  variant="outline"
-                  size="icon"
-                  className="border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10 h-12 w-12"
-                >
-                  <Icon name="ChevronLeft" size={24} />
-                </Button>
-                <div className="flex-1 text-center">
-                  <p className="text-[#E7E7E7]/70 text-sm">
-                    {currentOilIndex + 1} из {filteredOils.length}
-                  </p>
-                </div>
-                <Button
-                  onClick={goToNext}
-                  variant="outline"
-                  size="icon"
-                  className="border-[#CDB748]/30 text-[#E7E7E7] hover:bg-[#CDB748]/10 h-12 w-12"
-                >
-                  <Icon name="ChevronRight" size={24} />
-                </Button>
-              </div>
+      <div className="pt-24 pb-16 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <Card className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2rem]">
+            <div className="mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-2">
+                Послушать наши масла
+              </h2>
+              <p className="text-sm text-foreground/70">
+                Каждое масло имеет свой уникальный звук отжима. Выберите категорию или слушайте все сорта.
+              </p>
             </div>
+            
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-64 space-y-6">
+                <div className="bg-black/30 p-6 rounded-xl space-y-4">
+                  <h3 className="font-semibold text-lg flex items-center gap-2">
+                    <Icon name="Filter" size={20} />
+                    Категории
+                  </h3>
+                  <div className="space-y-3">
+                    {categories.map(category => (
+                      <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category.slug)}
+                          onChange={() => toggleCategory(category.slug)}
+                          className="w-5 h-5 rounded border-2 border-foreground/30 bg-transparent checked:bg-primary checked:border-primary cursor-pointer"
+                        />
+                        <span className="text-sm text-foreground group-hover:text-primary transition-colors">
+                          {category.name}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="relative">
-              <div className="sticker-pin bg-white rounded-2xl shadow-2xl p-6 aspect-[3/4] flex items-center justify-center overflow-hidden">
-                {currentOil.image_url ? (
-                  <img 
-                    src={currentOil.image_url} 
-                    alt={currentOil.name}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                ) : (
-                  <div className="text-9xl">
-                    {currentOil.emoji}
+                <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border border-primary/30">
+                  <div className="flex items-start gap-3">
+                    <Icon name="Music" size={20} className="text-primary flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Почему звук важен?</h4>
+                      <p className="text-xs text-foreground/90 leading-relaxed">
+                        Каждая капля масла создается с любовью. Послушайте звук настоящего качества.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {filteredOils.map((oil) => (
+                    <div key={oil.id} className="sticker-pin bg-white/95 p-6 rounded-xl space-y-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-5xl">{oil.emoji}</span>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-black">{oil.name}</h3>
+                          <p className="text-sm text-black/70">{oil.description}</p>
+                        </div>
+                      </div>
+                      <div className="bg-black/10 p-4 rounded-lg">
+                        <audio 
+                          controls 
+                          className="w-full"
+                          style={{ filter: 'invert(0.2) sepia(0.1)' }}
+                        >
+                          <source src={oil.audio_url} type="audio/mpeg" />
+                          Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                        <p className="text-xs text-black/60 text-center mt-2">
+                          Звук отжима
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {filteredOils.length === 0 && (
+                  <div className="text-center py-12">
+                    <Icon name="Search" size={48} className="mx-auto mb-4 text-foreground/30" />
+                    <p className="text-foreground/70">Не найдено масел в выбранных категориях</p>
                   </div>
                 )}
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </div>

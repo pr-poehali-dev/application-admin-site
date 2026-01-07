@@ -10,21 +10,21 @@
     --foreground: 0 0% 91%;
 
     --card: 0 0% 25%;
-    --card-foreground: 231 0% 91%;
+    --card-foreground: 0 0% 91%;
 
     --popover: 0 0% 25%;
     --popover-foreground: 0 0% 91%;
 
-    --primary: 51 72% 57%;
+    --primary: 48 58% 56%;
     --primary-foreground: 0 0% 0%;
 
     --secondary: 0 0% 30%;
     --secondary-foreground: 0 0% 91%;
 
     --muted: 0 0% 28%;
-    --muted-foreground: 0 0% 91%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 51 72% 57%;
+    --accent: 48 58% 56%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 70% 50%;
@@ -32,18 +32,18 @@
 
     --border: 0 0% 35%;
     --input: 0 0% 30%;
-    --ring: 51 72% 57%;
+    --ring: 48 58% 56%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 22%;
     --sidebar-foreground: 0 0% 91%;
-    --sidebar-primary: 51 72% 57%;
+    --sidebar-primary: 48 58% 56%;
     --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 0 0% 30%;
     --sidebar-accent-foreground: 0 0% 91%;
     --sidebar-border: 0 0% 35%;
-    --sidebar-ring: 51 72% 57%;
+    --sidebar-ring: 48 58% 56%;
   }
 }
 
@@ -53,12 +53,12 @@
   }
 
   body {
+    @apply text-foreground;
     font-family: "Open Sans", sans-serif;
-    background-image: url("https://cdn.poehali.dev/files/chalk-background.png.png");
+    background-image: url("https://cdn.poehali.dev/files/Frame 332.png");
     background-size: cover;
-    background-attachment: fixed;
     background-position: center;
-    color: #e7e7e7;
+    background-attachment: fixed;
   }
 
   h1,
